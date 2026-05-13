@@ -11,7 +11,8 @@ class DivisionController extends Controller
 {
     public function __construct(
         protected LocationService $service
-    ) {}
+    ) {
+    }
 
     public function index()
     {
@@ -33,7 +34,7 @@ class DivisionController extends Controller
 
         $this->service->createDivision($validated);
 
-        return redirect()->route('divisions.index')
+        return redirect()->route('admin.divisions.index')
             ->with('success', 'Division created successfully.');
     }
 
@@ -51,7 +52,7 @@ class DivisionController extends Controller
 
         $this->service->updateDivision($division, $validated);
 
-        return redirect()->route('divisions.index')
+        return redirect()->route('admin.divisions.index')
             ->with('success', 'Division updated successfully.');
     }
 
@@ -59,7 +60,7 @@ class DivisionController extends Controller
     {
         $this->service->deleteDivision($division);
 
-        return redirect()->route('divisions.index')
+        return redirect()->route('admin.divisions.index')
             ->with('success', 'Division deleted successfully.');
     }
 }

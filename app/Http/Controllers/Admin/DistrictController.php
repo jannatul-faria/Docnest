@@ -11,7 +11,8 @@ class DistrictController extends Controller
 {
     public function __construct(
         protected LocationService $service
-    ) {}
+    ) {
+    }
 
     public function index()
     {
@@ -35,7 +36,7 @@ class DistrictController extends Controller
 
         $this->service->createDistrict($validated);
 
-        return redirect()->route('districts.index')
+        return redirect()->route('admin.districts.index')
             ->with('success', 'District created successfully.');
     }
 
@@ -55,7 +56,7 @@ class DistrictController extends Controller
 
         $this->service->updateDistrict($district, $validated);
 
-        return redirect()->route('districts.index')
+        return redirect()->route('admin.districts.index')
             ->with('success', 'District updated successfully.');
     }
 
@@ -63,7 +64,7 @@ class DistrictController extends Controller
     {
         $this->service->deleteDistrict($district);
 
-        return redirect()->route('districts.index')
+        return redirect()->route('admin.districts.index')
             ->with('success', 'District deleted successfully.');
     }
 }

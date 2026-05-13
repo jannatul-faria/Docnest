@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
  
 use App\Models\Doctor;
 use App\Models\Department;
+use App\Models\Division;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $featuredDoctors = Doctor::with(['user', 'department'])
+        $featuredDoctors = Doctor::with(['user', 'department', 'chambers.area.district'])
             ->where('is_featured', true)
             ->where('status', true)
             ->take(6)
@@ -30,6 +31,8 @@ class HomeController extends Controller
                 ->toArray();
         }
 
-        return view('frontend.index', compact('featuredDoctors', 'departments', 'wishlistedIds'));
+        $divisions = Division::orderBy('name')->get();
+
+        return view('frontend.index', compact('featuredDoctors', 'departments', 'wishlistedIds', 'divisions'));
     }
 }

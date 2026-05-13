@@ -42,25 +42,28 @@
                     <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
                         <div class="space-y-2">
                             <label for="division_id" class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Division</label>
-                            <select id="division_id" class="w-full rounded-2xl border-slate-100 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all font-bold text-slate-700">
+                            <select name="division_id" id="division_id" class="w-full rounded-2xl border-slate-100 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all font-bold text-slate-700">
+                                <option value="">Select Division</option>
                                 @foreach($divisions as $division)
-                                    <option value="{{ $division->id }}" {{ $chamber->area->district->division_id == $division->id ? 'selected' : '' }}>{{ $division->name }}</option>
+                                    <option value="{{ $division->id }}" {{ old('division_id', $chamber->division_id) == $division->id ? 'selected' : '' }}>{{ $division->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="space-y-2">
                             <label for="district_id" class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">District</label>
-                            <select id="district_id" class="w-full rounded-2xl border-slate-100 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all font-bold text-slate-700">
+                            <select name="district_id" id="district_id" class="w-full rounded-2xl border-slate-100 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-50 transition-all font-bold text-slate-700" {{ !$chamber->district_id ? 'disabled' : '' }}>
+                                <option value="">Select District</option>
                                 @foreach($districts as $district)
-                                    <option value="{{ $district->id }}" {{ $chamber->area->district_id == $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
+                                    <option value="{{ $district->id }}" {{ old('district_id', $chamber->district_id) == $district->id ? 'selected' : '' }}>{{ $district->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="space-y-2">
                             <label for="area_id" class="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Area / Police Station</label>
-                            <select name="area_id" id="area_id" class="w-full rounded-2xl border-slate-100 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-50 focus:border-blue-400 transition-all font-bold text-slate-700">
+                            <select name="area_id" id="area_id" class="w-full rounded-2xl border-slate-100 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-50 focus:border-blue-400 transition-all font-bold text-slate-700" {{ !$chamber->district_id ? 'disabled' : '' }}>
+                                <option value="">Select Area</option>
                                 @foreach($areas as $area)
-                                    <option value="{{ $area->id }}" {{ $chamber->area_id == $area->id ? 'selected' : '' }}>{{ $area->name }}</option>
+                                    <option value="{{ $area->id }}" {{ old('area_id', $chamber->area_id) == $area->id ? 'selected' : '' }}>{{ $area->name }}</option>
                                 @endforeach
                             </select>
                             @error('area_id') <p class="text-xs text-red-600 font-bold ml-1">{{ $message }}</p> @enderror
@@ -160,13 +163,23 @@
                 areaSelect.disabled = true;
 
                 if (divisionId) {
-                    fetch(`{{ route('get-districts') }}?division_id=${divisionId}`)
+                    districtSelect.innerHTML = '<option value="">Loading...</option>';
+                    fetch(`{{ route('admin.get-districts') }}?division_id=${divisionId}`)
                         .then(res => res.json())
                         .then(data => {
-                            data.forEach(district => {
-                                districtSelect.innerHTML += `<option value="${district.id}">${district.name}</option>`;
-                            });
-                            districtSelect.disabled = false;
+                            districtSelect.innerHTML = '<option value="">Select District</option>';
+                            if (data.length > 0) {
+                                data.forEach(district => {
+                                    districtSelect.innerHTML += `<option value="${district.id}">${district.name}</option>`;
+                                });
+                                districtSelect.disabled = false;
+                            } else {
+                                districtSelect.innerHTML = '<option value="">No districts found</option>';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching districts:', error);
+                            districtSelect.innerHTML = '<option value="">Error loading districts</option>';
                         });
                 }
             });
@@ -178,13 +191,23 @@
                 areaSelect.disabled = true;
 
                 if (districtId) {
-                    fetch(`{{ route('get-areas') }}?district_id=${districtId}`)
+                    areaSelect.innerHTML = '<option value="">Loading...</option>';
+                    fetch(`{{ route('admin.get-areas') }}?district_id=${districtId}`)
                         .then(res => res.json())
                         .then(data => {
-                            data.forEach(area => {
-                                areaSelect.innerHTML += `<option value="${area.id}">${area.name}</option>`;
-                            });
-                            areaSelect.disabled = false;
+                            areaSelect.innerHTML = '<option value="">Select Area</option>';
+                            if (data.length > 0) {
+                                data.forEach(area => {
+                                    areaSelect.innerHTML += `<option value="${area.id}">${area.name}</option>`;
+                                });
+                                areaSelect.disabled = false;
+                            } else {
+                                areaSelect.innerHTML = '<option value="">No areas found</option>';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching areas:', error);
+                            areaSelect.innerHTML = '<option value="">Error loading areas</option>';
                         });
                 }
             });
@@ -229,9 +252,5 @@
             });
         });
     </script>
-    <style>
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
-    </style>
     @endpush
 </x-admin-layout>

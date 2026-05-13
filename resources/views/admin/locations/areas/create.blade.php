@@ -81,7 +81,7 @@
             districtSelect.disabled = true;
 
             if (divisionId) {
-                fetch(`{{ route('get-districts') }}?division_id=${divisionId}`)
+                fetch(`{{ route('admin.get-districts') }}?division_id=${divisionId}`)
                     .then(response => response.json())
                     .then(data => {
                         districtSelect.innerHTML = '<option value="">Select District</option>';

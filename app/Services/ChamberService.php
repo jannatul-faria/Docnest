@@ -22,7 +22,9 @@ class ChamberService
         return DB::transaction(function () use ($data) {
             $chamber = $this->repository->create([
                 'doctor_id' => $data['doctor_id'],
-                'area_id' => $data['area_id'],
+                'division_id' => $data['division_id'] ?? null,
+                'district_id' => $data['district_id'] ?? null,
+                'area_id' => $data['area_id'] ?? null,
                 'name' => $data['name'],
                 'address' => $data['address'],
                 'phone' => $data['phone'] ?? null,
@@ -46,7 +48,9 @@ class ChamberService
         return DB::transaction(function () use ($chamber, $data) {
             $this->repository->update($chamber, [
                 'doctor_id' => $data['doctor_id'],
-                'area_id' => $data['area_id'],
+                'division_id' => $data['division_id'] ?? null,
+                'district_id' => $data['district_id'] ?? null,
+                'area_id' => $data['area_id'] ?? null,
                 'name' => $data['name'],
                 'address' => $data['address'],
                 'phone' => $data['phone'] ?? null,

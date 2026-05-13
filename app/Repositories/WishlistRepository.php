@@ -29,7 +29,7 @@ class WishlistRepository
 
     public function getUserWishlist($userId)
     {
-        return Wishlist::with(['doctor.user', 'doctor.department'])
+        return Wishlist::with(['doctor.user', 'doctor.department', 'doctor.chambers.area.district'])
             ->where('user_id', $userId)
             ->latest()
             ->get();

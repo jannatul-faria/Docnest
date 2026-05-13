@@ -43,6 +43,8 @@
             background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0) 100%);
             border-left: 4px solid #3b82f6;
         }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-in { animation: fadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     </style>
 </head>
 <body class="antialiased">
@@ -152,9 +154,102 @@
 
             <!-- Page Content -->
             <div class="p-8">
+                @if(session('success'))
+                    <div class="p-4 mb-6 text-sm text-green-800 rounded-2xl bg-green-50 border border-green-100 flex items-center animate-fade-in shadow-sm shadow-green-100" role="alert">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        <span class="font-bold">{{ session('success') }}</span>
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="p-4 mb-6 text-sm text-rose-800 rounded-2xl bg-rose-50 border border-rose-100 flex items-center animate-fade-in shadow-sm shadow-rose-100" role="alert">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        <span class="font-bold">{{ session('error') }}</span>
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="p-4 mb-6 text-sm text-rose-800 rounded-2xl bg-rose-50 border border-rose-100 animate-fade-in shadow-sm shadow-rose-100" role="alert">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+                            <span class="font-black uppercase tracking-widest text-[10px]">Please correct the following errors:</span>
+                        </div>
+                        <ul class="mt-1.5 list-disc list-inside text-xs font-bold space-y-1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 {{ $slot }}
             </div>
         </main>
     </div>
+    @stack('scripts')
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="fixed inset-0 z-50 hidden overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Background overlay -->
+            <div id="delete-modal-overlay" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" aria-hidden="true"></div>
+
+            <!-- Modal panel -->
+            <div class="inline-block align-bottom bg-white rounded-[2.5rem] text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full animate-fade-in">
+                <div class="bg-white px-8 pt-10 pb-8">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-16 w-16 rounded-3xl bg-rose-50 sm:mx-0 sm:h-14 sm:w-14 border border-rose-100">
+                            <svg class="h-8 w-8 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                        </div>
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-6 sm:text-left">
+                            <h3 class="text-2xl font-black text-slate-900 leading-6 tracking-tight" id="modal-title">Confirm Deletion</h3>
+                            <div class="mt-4">
+                                <p class="text-sm font-bold text-slate-500 leading-relaxed" id="delete-modal-message">
+                                    Are you sure you want to delete this? This action cannot be undone and all associated data will be removed permanently.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-50/50 px-8 py-6 sm:flex sm:flex-row-reverse gap-3">
+                    <button type="button" id="confirm-delete-btn" class="w-full inline-flex justify-center rounded-2xl border border-transparent shadow-lg shadow-rose-100 px-6 py-3 bg-rose-600 text-base font-black text-white hover:bg-rose-700 transition-all sm:w-auto sm:text-sm">
+                        Yes, Delete Permanently
+                    </button>
+                    <button type="button" id="close-delete-modal" class="mt-3 w-full inline-flex justify-center rounded-2xl border border-slate-200 shadow-sm px-6 py-3 bg-white text-base font-black text-slate-700 hover:bg-slate-50 transition-all sm:mt-0 sm:w-auto sm:text-sm">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function confirmDelete(formId, message = null) {
+            const modal = document.getElementById('delete-modal');
+            const overlay = document.getElementById('delete-modal-overlay');
+            const closeBtn = document.getElementById('close-delete-modal');
+            const confirmBtn = document.getElementById('confirm-delete-btn');
+            const messageEl = document.getElementById('delete-modal-message');
+
+            if (message) {
+                messageEl.textContent = message;
+            }
+
+            modal.classList.remove('hidden');
+
+            const closeModal = () => {
+                modal.classList.add('hidden');
+            };
+
+            closeBtn.onclick = closeModal;
+            overlay.onclick = closeModal;
+
+            confirmBtn.onclick = () => {
+                document.getElementById(formId).submit();
+            };
+        }
+    </script>
 </body>
 </html>

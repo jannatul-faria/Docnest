@@ -15,7 +15,7 @@ class AreaRepository
 
     public function getByDistrictId(int $districtId): Collection
     {
-        return Area::where('district_id', $districtId)->where('status', true)->get();
+        return Area::where('district_id', $districtId)->get();
     }
 
     public function findById(int $id): ?Area

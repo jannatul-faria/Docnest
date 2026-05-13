@@ -16,7 +16,7 @@ class DoctorRepository
 
     public function filter(array $filters, int $perPage = 9): LengthAwarePaginator
     {
-        $query = Doctor::with(['user', 'department', 'media'])
+        $query = Doctor::with(['user', 'department', 'media', 'chambers.area.district'])
             ->where('status', true);
 
         // Search by Name

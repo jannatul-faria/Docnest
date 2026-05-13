@@ -48,7 +48,16 @@
                             </div>
 
                             <h4 class="text-2xl font-black text-slate-900 mb-2">{{ $doctor->user->name }}</h4>
-                            <p class="text-sm font-bold text-slate-400 mb-6">{{ $doctor->specialization }}</p>
+                            <p class="text-sm font-bold text-slate-400 mb-3">{{ $doctor->specialization }}</p>
+                            @php $firstChamber = $doctor->chambers->first(); @endphp
+                            @if($firstChamber)
+                                <div class="flex items-center gap-2 mb-6">
+                                    <svg class="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    <span class="text-xs font-bold text-slate-500">{{ $firstChamber->area->name }}, {{ $firstChamber->area->district->name }}</span>
+                                </div>
+                            @else
+                                <div class="mb-6"></div>
+                            @endif
                             
                             <div class="flex items-center justify-between pt-6 border-t border-slate-50">
                                 <div class="flex items-center text-amber-400">
@@ -60,7 +69,7 @@
                                 </div>
                             </div>
 
-                            <a href="#" class="mt-8 block w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest text-center hover:bg-indigo-600 transition-all shadow-xl shadow-slate-200">
+                            <a href="{{ route('doctors.show', $doctor->id) }}" class="mt-8 block w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest text-center hover:bg-indigo-600 transition-all shadow-xl shadow-slate-200">
                                 View Profile
                             </a>
                         </div>

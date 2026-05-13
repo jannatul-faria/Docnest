@@ -23,9 +23,19 @@
                         <input type="text" name="search" placeholder="Search Doctor, Specialty..." class="w-full border-none focus:ring-0 font-bold text-slate-700 placeholder-slate-300">
                     </div>
                     <div class="hidden md:block w-px h-10 bg-slate-100"></div>
-                    <div class="flex-1 w-full flex items-center px-6 py-4">
-                        <svg class="w-5 h-5 text-slate-300 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                        <input type="text" placeholder="Location..." readonly onclick="window.location.href='{{ route('doctors.index') }}'" class="w-full border-none focus:ring-0 font-bold text-slate-700 placeholder-slate-300 cursor-pointer">
+                    <div class="flex-[1.5] w-full flex flex-col relative">
+                        <div class="flex items-center px-6 py-4 h-full">
+                            <svg class="w-5 h-5 text-slate-300 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <input type="text" id="location-search" placeholder="Enter Location (City, Area...)" class="w-full border-none focus:ring-0 font-bold text-slate-700 placeholder-slate-300 bg-transparent" autocomplete="off">
+                            <input type="hidden" name="division_id" id="hidden-division-id">
+                            <input type="hidden" name="district_id" id="hidden-district-id">
+                            <input type="hidden" name="area_id" id="hidden-area-id">
+                        </div>
+                        
+                        <!-- Suggestions Dropdown -->
+                        <div id="location-suggestions" class="absolute top-full left-0 right-0 mt-4 bg-white rounded-[1.5rem] shadow-2xl border border-slate-50 overflow-hidden hidden z-50 max-h-80 overflow-y-auto">
+                            <!-- Results will be injected here -->
+                        </div>
                     </div>
                     <button type="submit" class="w-full md:w-auto px-10 py-4 bg-indigo-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200">
                         Search
@@ -120,7 +130,16 @@
                         </div>
 
                         <h4 class="text-2xl font-black text-slate-900 mb-2 leading-tight"><a href="{{ route('doctors.show', $doctor->id) }}" class="hover:text-indigo-600 transition-colors">{{ $doctor->user->name }}</a></h4>
-                        <p class="text-sm font-bold text-slate-400 mb-6">{{ $doctor->specialization }}</p>
+                        <p class="text-sm font-bold text-slate-400 mb-3">{{ $doctor->specialization }}</p>
+                        @php $firstChamber = $doctor->chambers->first(); @endphp
+                        @if($firstChamber)
+                            <div class="flex items-center gap-2 mb-6">
+                                <svg class="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                <span class="text-xs font-bold text-slate-500">{{ $firstChamber->area->name }}, {{ $firstChamber->area->district->name }}</span>
+                            </div>
+                        @else
+                            <div class="mb-6"></div>
+                        @endif
                         
                         <div class="flex items-center justify-between pt-6 border-t border-slate-50">
                             <div class="flex items-center text-amber-400">
@@ -233,6 +252,84 @@
                 console.error("Wishlist toggle failed:", err);
             });
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const locationInput = document.getElementById('location-search');
+            const suggestionsContainer = document.getElementById('location-suggestions');
+            const hiddenDivision = document.getElementById('hidden-division-id');
+            const hiddenDistrict = document.getElementById('hidden-district-id');
+            const hiddenArea = document.getElementById('hidden-area-id');
+
+            let debounceTimer;
+
+            if (locationInput) {
+                locationInput.addEventListener('input', function() {
+                    const query = this.value;
+                    
+                    // Reset hiddens when user types
+                    hiddenDivision.value = '';
+                    hiddenDistrict.value = '';
+                    hiddenArea.value = '';
+
+                    clearTimeout(debounceTimer);
+                    
+                    if (query.length < 2) {
+                        suggestionsContainer.classList.add('hidden');
+                        return;
+                    }
+
+                    debounceTimer = setTimeout(() => {
+                        fetch(`/api/locations/search?query=${encodeURIComponent(query)}`)
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.length > 0) {
+                                    suggestionsContainer.innerHTML = '';
+                                    data.forEach(item => {
+                                        const div = document.createElement('div');
+                                        div.className = 'px-6 py-4 hover:bg-indigo-50 cursor-pointer transition-colors border-b border-slate-50 last:border-none flex items-center gap-3 group';
+                                        
+                                        let icon = '<svg class="w-4 h-4 text-slate-400 group-hover:text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>';
+                                        
+                                        div.innerHTML = `
+                                            ${icon}
+                                            <div>
+                                                <div class="text-sm font-bold text-slate-700 group-hover:text-indigo-600">${item.display}</div>
+                                            </div>
+                                        `;
+                                        
+                                        div.addEventListener('click', () => {
+                                            locationInput.value = item.name;
+                                            
+                                            // Reset hiddens
+                                            hiddenDivision.value = '';
+                                            hiddenDistrict.value = '';
+                                            hiddenArea.value = '';
+                                            
+                                            // Set specific hidden
+                                            if (item.type === 'division') hiddenDivision.value = item.id;
+                                            if (item.type === 'district') hiddenDistrict.value = item.id;
+                                            if (item.type === 'area') hiddenArea.value = item.id;
+                                            
+                                            suggestionsContainer.classList.add('hidden');
+                                        });
+                                        suggestionsContainer.appendChild(div);
+                                    });
+                                    suggestionsContainer.classList.remove('hidden');
+                                } else {
+                                    suggestionsContainer.classList.add('hidden');
+                                }
+                            });
+                    }, 300);
+                });
+
+                // Close suggestions when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!locationInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+                        suggestionsContainer.classList.add('hidden');
+                    }
+                });
+            }
+        });
     </script>
     @endpush
 </x-frontend-layout>

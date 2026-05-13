@@ -11,7 +11,8 @@ class AreaController extends Controller
 {
     public function __construct(
         protected LocationService $service
-    ) {}
+    ) {
+    }
 
     public function index()
     {
@@ -35,7 +36,7 @@ class AreaController extends Controller
 
         $this->service->createArea($validated);
 
-        return redirect()->route('areas.index')
+        return redirect()->route('admin.areas.index')
             ->with('success', 'Area created successfully.');
     }
 
@@ -56,7 +57,7 @@ class AreaController extends Controller
 
         $this->service->updateArea($area, $validated);
 
-        return redirect()->route('areas.index')
+        return redirect()->route('admin.areas.index')
             ->with('success', 'Area updated successfully.');
     }
 
@@ -64,10 +65,10 @@ class AreaController extends Controller
     {
         $this->service->deleteArea($area);
 
-        return redirect()->route('areas.index')
+        return redirect()->route('admin.areas.index')
             ->with('success', 'Area deleted successfully.');
     }
-    
+
     /**
      * AJAX method to get districts by division
      */
@@ -75,5 +76,14 @@ class AreaController extends Controller
     {
         $districts = $this->service->getDistrictsByDivision($request->division_id);
         return response()->json($districts);
+    }
+
+    /**
+     * AJAX method to get areas by district
+     */
+    public function getAreas(Request $request)
+    {
+        $areas = $this->service->getAreasByDistrict($request->district_id);
+        return response()->json($areas);
     }
 }

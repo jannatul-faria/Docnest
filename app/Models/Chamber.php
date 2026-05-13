@@ -14,6 +14,8 @@ class Chamber extends Model
 
     protected $fillable = [
         'doctor_id',
+        'division_id',
+        'district_id',
         'area_id',
         'name',
         'address',
@@ -36,6 +38,16 @@ class Chamber extends Model
     public function doctor(): BelongsTo
     {
         return $this->belongsTo(Doctor::class);
+    }
+
+    public function division(): BelongsTo
+    {
+        return $this->belongsTo(Division::class);
+    }
+
+    public function district(): BelongsTo
+    {
+        return $this->belongsTo(District::class);
     }
 
     public function area(): BelongsTo

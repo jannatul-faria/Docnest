@@ -12,7 +12,8 @@ class DoctorController extends Controller
 {
     public function __construct(
         protected DoctorService $service
-    ) {}
+    ) {
+    }
 
     public function index()
     {
@@ -55,7 +56,7 @@ class DoctorController extends Controller
 
         $this->service->createDoctor($validated);
 
-        return redirect()->route('doctors.index')
+        return redirect()->route('admin.doctors.index')
             ->with('success', 'Doctor profile created successfully.');
     }
 
@@ -93,7 +94,7 @@ class DoctorController extends Controller
 
         $this->service->updateDoctor($doctor, $validated);
 
-        return redirect()->route('doctors.index')
+        return redirect()->route('admin.doctors.index')
             ->with('success', 'Doctor profile updated successfully.');
     }
 
@@ -101,7 +102,7 @@ class DoctorController extends Controller
     {
         $this->service->deleteDoctor($doctor);
 
-        return redirect()->route('doctors.index')
+        return redirect()->route('admin.doctors.index')
             ->with('success', 'Doctor profile and associated user deleted.');
     }
 }

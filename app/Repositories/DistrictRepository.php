@@ -15,7 +15,7 @@ class DistrictRepository
 
     public function getByDivisionId(int $divisionId): Collection
     {
-        return District::where('division_id', $divisionId)->where('status', true)->get();
+        return District::where('division_id', $divisionId)->get();
     }
 
     public function findById(int $id): ?District

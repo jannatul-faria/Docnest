@@ -32,7 +32,9 @@ class ChamberController extends Controller
     {
         $validated = $request->validate([
             'doctor_id' => 'required|exists:doctors,id',
-            'area_id' => 'required|exists:areas,id',
+            'division_id' => 'nullable|exists:divisions,id',
+            'district_id' => 'nullable|exists:districts,id',
+            'area_id' => 'nullable|exists:areas,id',
             'name' => 'required|string|max:255',
             'address' => 'required|string',
             'phone' => 'nullable|string|max:20',
@@ -46,7 +48,7 @@ class ChamberController extends Controller
 
         $this->service->createChamber($validated);
 
-        return redirect()->route('chambers.index')
+        return redirect()->route('admin.chambers.index')
             ->with('success', 'Chamber created successfully.');
     }
 
@@ -57,8 +59,8 @@ class ChamberController extends Controller
         $divisions = Division::all();
         
         // Pre-load districts and areas for the current chamber's location
-        $districts = \App\Models\District::where('division_id', $chamber->area->district->division_id)->get();
-        $areas = \App\Models\Area::where('district_id', $chamber->area->district_id)->get();
+        $districts = $chamber->division_id ? \App\Models\District::where('division_id', $chamber->division_id)->get() : collect();
+        $areas = $chamber->district_id ? \App\Models\Area::where('district_id', $chamber->district_id)->get() : collect();
 
         return view('admin.chambers.edit', compact('chamber', 'doctors', 'divisions', 'districts', 'areas'));
     }
@@ -67,7 +69,9 @@ class ChamberController extends Controller
     {
         $validated = $request->validate([
             'doctor_id' => 'required|exists:doctors,id',
-            'area_id' => 'required|exists:areas,id',
+            'division_id' => 'nullable|exists:divisions,id',
+            'district_id' => 'nullable|exists:districts,id',
+            'area_id' => 'nullable|exists:areas,id',
             'name' => 'required|string|max:255',
             'address' => 'required|string',
             'phone' => 'nullable|string|max:20',
@@ -77,7 +81,7 @@ class ChamberController extends Controller
 
         $this->service->updateChamber($chamber, $validated);
 
-        return redirect()->route('chambers.index')
+        return redirect()->route('admin.chambers.index')
             ->with('success', 'Chamber updated successfully.');
     }
 
@@ -85,7 +89,7 @@ class ChamberController extends Controller
     {
         $this->service->deleteChamber($chamber);
 
-        return redirect()->route('chambers.index')
+        return redirect()->route('admin.chambers.index')
             ->with('success', 'Chamber deleted successfully.');
     }
 }

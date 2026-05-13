@@ -18,6 +18,56 @@ Route::get('/api/areas', function(\Illuminate\Http\Request $request) {
     return \App\Models\Area::where('district_id', $request->district_id)->orderBy('name')->get();
 });
 
+Route::get('/api/locations/search', function(\Illuminate\Http\Request $request) {
+    $query = $request->query('query');
+    if (!$query) return [];
+
+    $results = [];
+
+    // Search Divisions
+    $divisions = \App\Models\Division::where('name', 'like', "%$query%")
+        ->take(5)
+        ->get();
+    foreach($divisions as $div) {
+        $results[] = [
+            'id' => $div->id,
+            'name' => $div->name,
+            'type' => 'division',
+            'display' => $div->name . ' (Division)'
+        ];
+    }
+
+    // Search Districts
+    $districts = \App\Models\District::with('division')
+        ->where('name', 'like', "%$query%")
+        ->take(5)
+        ->get();
+    foreach($districts as $dist) {
+        $results[] = [
+            'id' => $dist->id,
+            'name' => $dist->name,
+            'type' => 'district',
+            'display' => $dist->name . ', ' . $dist->division->name . ' (District)'
+        ];
+    }
+
+    // Search Areas
+    $areas = \App\Models\Area::with('district.division')
+        ->where('name', 'like', "%$query%")
+        ->take(10)
+        ->get();
+    foreach($areas as $area) {
+        $results[] = [
+            'id' => $area->id,
+            'name' => $area->name,
+            'type' => 'area',
+            'display' => $area->name . ', ' . $area->district->name . ' (Area)'
+        ];
+    }
+
+    return response()->json($results);
+});
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/wishlist', 'App\Http\Controllers\WishlistController@index')->name('wishlist.index');
     Route::post('/wishlist/toggle', 'App\Http\Controllers\WishlistController@toggle')->name('wishlist.toggle');
@@ -51,9 +101,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Chamber Management
     Route::resource('chambers', \App\Http\Controllers\Admin\ChamberController::class);
-    Route::get('get-areas', function(\Illuminate\Http\Request $request) {
-        return \App\Models\Area::where('district_id', $request->district_id)->get();
-    })->name('get-areas');
+    Route::get('get-areas', [\App\Http\Controllers\Admin\AreaController::class, 'getAreas'])->name('get-areas');
 
     // Review Management
     Route::get('reviews', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('reviews.index');

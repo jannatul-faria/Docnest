@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('chambers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('doctor_id')->constrained()->onDelete('cascade');
-            $table->foreignId('area_id')->constrained()->onDelete('cascade');
+            $table->foreignId('area_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('name');
             $table->text('address');
             $table->string('phone')->nullable();
