@@ -7,11 +7,21 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ChamberRepository
 {
-    public function getAllPaginated(int $perPage = 10): LengthAwarePaginator
+    public function getAllPaginated(array $filters = [], int $perPage = 10): LengthAwarePaginator
     {
-        return Chamber::with(['doctor.user', 'area.district.division'])
-            ->latest()
-            ->paginate($perPage);
+        $query = Chamber::with(['doctor.user', 'area.district.division'])->latest();
+
+        if (!empty($filters['search'])) {
+            $query->where(function($q) use ($filters) {
+                $q->where('name', 'like', '%' . $filters['search'] . '%')
+                  ->orWhere('address', 'like', '%' . $filters['search'] . '%')
+                  ->orWhereHas('doctor.user', function ($sq) use ($filters) {
+                      $sq->where('name', 'like', '%' . $filters['search'] . '%');
+                  });
+            });
+        }
+
+        return $query->paginate($perPage)->withQueryString();
     }
 
     public function findById(int $id): ?Chamber

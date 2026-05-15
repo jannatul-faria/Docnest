@@ -16,7 +16,8 @@ class LocationService
         protected DivisionRepository $divisionRepository,
         protected DistrictRepository $districtRepository,
         protected AreaRepository $areaRepository
-    ) {}
+    ) {
+    }
 
     // Division Methods
     public function getAllDivisions()
@@ -92,7 +93,7 @@ class LocationService
     {
         return $this->areaRepository->delete($area);
     }
-    
+
     // Helpers
     public function getActiveDivisions()
     {

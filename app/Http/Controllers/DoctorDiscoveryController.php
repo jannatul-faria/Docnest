@@ -25,7 +25,7 @@ class DoctorDiscoveryController extends Controller
         ]);
 
         $doctors = $this->doctorService->filterDoctors($filters);
-        $departments = Department::orderBy('name')->get();
+        $departments = Department::withCount('doctors')->orderBy('name')->get();
         $divisions = Division::orderBy('name')->get();
 
         $wishlistedIds = [];
@@ -35,8 +35,12 @@ class DoctorDiscoveryController extends Controller
                 ->toArray();
         }
 
-        if ($request->ajax()) {
-            return view('frontend.doctors._list', compact('doctors', 'wishlistedIds'))->render();
+        if ($request->has('partial')) {
+            return response()->view('frontend.doctors._list', compact('doctors', 'wishlistedIds'))
+                ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                ->header('Pragma', 'no-cache')
+                ->header('Expires', '0')
+                ->header('Vary', 'X-Partial-Request');
         }
 
         return view('frontend.doctors.index', compact('doctors', 'departments', 'divisions', 'wishlistedIds', 'filters'));

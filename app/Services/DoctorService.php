@@ -13,7 +13,8 @@ class DoctorService
 {
     public function __construct(
         protected DoctorRepository $repository
-    ) {}
+    ) {
+    }
 
     public function getAllDoctors()
     {
@@ -41,7 +42,7 @@ class DoctorService
             $doctorData = [
                 'user_id' => $user->id,
                 'department_id' => $data['department_id'],
-                'specialization' => $data['specialization'],
+                'specialization' => $data['specialization'] ?? 'N/A',
                 'experience_years' => $data['experience_years'] ?? 0,
                 'consultation_fee' => $data['consultation_fee'] ?? 0,
                 'hospital_name' => $data['hospital_name'] ?? null,
@@ -61,7 +62,7 @@ class DoctorService
             // 4. Handle Educations
             if (isset($data['educations']) && is_array($data['educations'])) {
                 foreach ($data['educations'] as $edu) {
-                    if (!empty($edu['degree'])) {
+                    if (!empty($edu['degree']) && !empty($edu['institution']) && !empty($edu['passing_year'])) {
                         $doctor->educations()->create($edu);
                     }
                 }
@@ -70,7 +71,7 @@ class DoctorService
             // 5. Handle Experiences
             if (isset($data['experiences']) && is_array($data['experiences'])) {
                 foreach ($data['experiences'] as $exp) {
-                    if (!empty($exp['designation'])) {
+                    if (!empty($exp['designation']) && !empty($exp['institution']) && !empty($exp['start_date'])) {
                         $doctor->experiences()->create($exp);
                     }
                 }
@@ -94,6 +95,9 @@ class DoctorService
             }
 
             // 2. Update Doctor Profile
+            if (empty($data['specialization'])) {
+                $data['specialization'] = 'N/A';
+            }
             $this->repository->update($doctor, $data);
 
             // 3. Handle Profile Image
@@ -101,12 +105,11 @@ class DoctorService
                 $doctor->addMedia($data['profile_image'])->toMediaCollection('profile_image');
             }
 
-            // 4. Handle Educations (Simple sync for now: delete and re-create or update existing)
-            // For simplicity in this demo, let's just re-create if provided or handle specifically
+            // 4. Handle Educations
             if (isset($data['educations']) && is_array($data['educations'])) {
                 $doctor->educations()->delete();
                 foreach ($data['educations'] as $edu) {
-                    if (!empty($edu['degree'])) {
+                    if (!empty($edu['degree']) && !empty($edu['institution']) && !empty($edu['passing_year'])) {
                         $doctor->educations()->create($edu);
                     }
                 }
@@ -116,7 +119,7 @@ class DoctorService
             if (isset($data['experiences']) && is_array($data['experiences'])) {
                 $doctor->experiences()->delete();
                 foreach ($data['experiences'] as $exp) {
-                    if (!empty($exp['designation'])) {
+                    if (!empty($exp['designation']) && !empty($exp['institution']) && !empty($exp['start_date'])) {
                         $doctor->experiences()->create($exp);
                     }
                 }

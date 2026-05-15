@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'DocNest') }} - Admin</title>
+    <title>{{ get_setting('site_name', config('app.name', 'DocNest')) }} - Admin</title>
+
+    <!-- Favicon -->
+    @if(get_setting('favicon'))
+        <link rel="icon" type="image/png" href="{{ asset('storage/' . get_setting('favicon')) }}">
+    @endif
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,8 +19,77 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- jQuery & DataTables -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="https://cdn.datatables.net/2.0.7/css/dataTables.tailwind.css" rel="stylesheet">
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.7/js/dataTables.tailwind.js"></script>
 
-    <style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    @php
+        if (!function_exists('hexToRgb')) {
+            function hexToRgb($hex) {
+                $hex = str_replace('#', '', $hex);
+                if(strlen($hex) == 3) {
+                    $r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
+                    $g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
+                    $b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
+                } else {
+                    $r = hexdec(substr($hex, 0, 2));
+                    $g = hexdec(substr($hex, 2, 2));
+                    $b = hexdec(substr($hex, 4, 2));
+                }
+                return "$r, $g, $b";
+            }
+        }
+        $primaryColor = get_setting('primary_color', '#008947');
+        $primaryRgb = hexToRgb($primaryColor);
+        $headingColor = get_setting('heading_color', '#0f172a');
+    @endphp
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '{{ $primaryColor }}',
+                            light: 'rgba({{ $primaryRgb }}, 0.1)',
+                            dark: 'rgba({{ $primaryRgb }}, 0.9)',
+                        },
+                        heading: '{{ $headingColor }}',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/tailwindcss">
+        :root {
+            --primary-color: {{ $primaryColor }};
+            --primary-rgb: {{ $primaryRgb }};
+        }
+
+        /* DataTables Custom Premium Styling */
+        .dt-container .dt-search input {
+            @apply pl-10 pr-3 py-2 border border-slate-200 rounded-lg leading-5 bg-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary sm:text-sm transition-all;
+            margin-left: 0.5rem;
+        }
+        .dt-container .dt-paging .dt-paging-button {
+            @apply px-3 py-1 mx-1 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 transition-all !important;
+        }
+        .dt-container .dt-paging .dt-paging-button.current {
+            @apply bg-primary text-white border-primary hover:bg-primary/90 !important;
+        }
+        .dt-container .dt-length select {
+            @apply py-1 pl-2 pr-8 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary sm:text-sm;
+        }
+        .dt-container .dt-info {
+            @apply text-sm text-slate-500 font-medium;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f1f5f9;
@@ -40,8 +114,8 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
         .active-nav-link {
-            background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0) 100%);
-            border-left: 4px solid #3b82f6;
+            background: linear-gradient(90deg, rgba({{ $primaryRgb }}, 0.1) 0%, rgba({{ $primaryRgb }}, 0) 100%);
+            border-left: 4px solid var(--primary-color);
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in { animation: fadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
@@ -53,8 +127,14 @@
         <aside class="w-64 sidebar-gradient text-white flex-shrink-0 flex flex-col hidden md:flex">
             <div class="p-6">
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-2">
-                    <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center font-bold text-xl">D</div>
-                    <span class="text-xl font-bold tracking-tight">DocNest</span>
+                    @if(get_setting('logo'))
+                        <img src="{{ asset('storage/' . get_setting('logo')) }}" alt="{{ get_setting('site_name', 'DocNest') }}" class="h-8 w-auto">
+                    @else
+                        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center font-bold text-xl text-white">
+                            {{ substr(get_setting('site_name', 'DocNest'), 0, 1) }}
+                        </div>
+                    @endif
+                    <span class="text-xl font-bold tracking-tight">{{ get_setting('site_name', 'DocNest') }}</span>
                 </a>
             </div>
 
@@ -119,6 +199,15 @@
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     Activity Logs
                 </x-admin-nav-link>
+
+                <div class="pt-4 pb-2 px-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                    System Settings
+                </div>
+
+                <x-admin-nav-link href="{{ route('admin.settings.index') }}" :active="request()->routeIs('admin.settings.*')">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Site Settings
+                </x-admin-nav-link>
             </nav>
 
             <div class="p-4 border-t border-slate-700">
@@ -137,7 +226,7 @@
             <!-- Topbar -->
             <header class="glass-effect sticky top-0 z-10 h-16 flex items-center justify-between px-8">
                 <div class="flex items-center">
-                    <h2 class="text-xl font-semibold text-slate-800">
+                    <h2 class="text-xl font-semibold text-heading">
                         @yield('header', 'Dashboard')
                     </h2>
                 </div>
@@ -146,7 +235,7 @@
                     <button class="p-2 text-slate-500 hover:text-slate-800 transition-colors">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                     </button>
-                    <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+                    <div class="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
                         {{ substr(Auth::user()->name, 0, 1) }}
                     </div>
                 </div>
@@ -204,7 +293,7 @@
                             </svg>
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-6 sm:text-left">
-                            <h3 class="text-2xl font-black text-slate-900 leading-6 tracking-tight" id="modal-title">Confirm Deletion</h3>
+                            <h3 class="text-2xl font-black text-heading leading-6 tracking-tight" id="modal-title">Confirm Deletion</h3>
                             <div class="mt-4">
                                 <p class="text-sm font-bold text-slate-500 leading-relaxed" id="delete-modal-message">
                                     Are you sure you want to delete this? This action cannot be undone and all associated data will be removed permanently.

@@ -6,13 +6,13 @@
                 <h1 class="text-4xl font-black mb-2 tracking-tight">Welcome back, {{ Auth::user()->name }}!</h1>
                 <p class="text-slate-400 font-bold max-w-lg leading-relaxed">Here's what's happening with DocNest today. Your medical platform is growing steadily.</p>
                 <div class="mt-8 flex gap-4">
-                    <a href="{{ route('admin.doctors.create') }}" class="px-6 py-3 bg-blue-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-500 transition-all">Add New Doctor</a>
+                    <a href="{{ route('admin.doctors.create') }}" class="px-6 py-3 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">Add New Doctor</a>
                     <a href="{{ route('home') }}" target="_blank" class="px-6 py-3 bg-slate-800 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-700 transition-all">View Site</a>
                 </div>
             </div>
             <!-- Decorative circle -->
-            <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-blue-600/20 blur-3xl"></div>
-            <div class="absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-indigo-600/10 blur-3xl"></div>
+            <div class="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/20 blur-3xl"></div>
+            <div class="absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl"></div>
         </div>
 
         <!-- Quick Stats -->

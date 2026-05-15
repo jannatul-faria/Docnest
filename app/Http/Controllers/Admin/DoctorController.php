@@ -7,6 +7,7 @@ use App\Models\Doctor;
 use App\Models\Department;
 use App\Services\DoctorService;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class DoctorController extends Controller
 {
@@ -15,9 +16,9 @@ class DoctorController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $doctors = $this->service->getAllDoctors();
+        $doctors = $this->service->getAllDoctors($request->only('search'));
         return view('admin.doctors.index', compact('doctors'));
     }
 
@@ -34,24 +35,24 @@ class DoctorController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
             'department_id' => 'required|exists:departments,id',
-            'specialization' => 'required|string|max:255',
+            'specialization' => 'nullable|string|max:255',
             'experience_years' => 'nullable|integer|min:0',
             'consultation_fee' => 'nullable|numeric|min:0',
             'hospital_name' => 'nullable|string|max:255',
             'bio' => 'nullable|string',
             'profile_image' => 'nullable|image|max:2048',
             'status' => 'required|boolean',
-            'is_featured' => 'required|boolean',
+            'is_featured' => 'nullable|boolean',
             'educations' => 'nullable|array',
-            'educations.*.degree' => 'required_with:educations|string|max:255',
-            'educations.*.institution' => 'required_with:educations|string|max:255',
-            'educations.*.passing_year' => 'required_with:educations|string|max:4',
+            'educations.*.degree' => 'nullable|string|max:255',
+            'educations.*.institution' => 'nullable|string|max:255',
+            'educations.*.passing_year' => 'nullable|string|max:4',
             'experiences' => 'nullable|array',
-            'experiences.*.designation' => 'required_with:experiences|string|max:255',
-            'experiences.*.institution' => 'required_with:experiences|string|max:255',
-            'experiences.*.start_date' => 'required_with:experiences|date',
+            'experiences.*.designation' => 'nullable|string|max:255',
+            'experiences.*.institution' => 'nullable|string|max:255',
+            'experiences.*.start_date' => 'nullable|date',
             'experiences.*.end_date' => 'nullable|date|after_or_equal:experiences.*.start_date',
-            'experiences.*.is_current' => 'boolean',
+            'experiences.*.is_current' => 'nullable|boolean',
         ]);
 
         $this->service->createDoctor($validated);
@@ -80,16 +81,24 @@ class DoctorController extends Controller
             'email' => 'required|email|unique:users,email,' . $doctor->user_id,
             'password' => 'nullable|string|min:8',
             'department_id' => 'required|exists:departments,id',
-            'specialization' => 'required|string|max:255',
+            'specialization' => 'nullable|string|max:255',
             'experience_years' => 'nullable|integer|min:0',
             'consultation_fee' => 'nullable|numeric|min:0',
             'hospital_name' => 'nullable|string|max:255',
             'bio' => 'nullable|string',
             'profile_image' => 'nullable|image|max:2048',
             'status' => 'required|boolean',
-            'is_featured' => 'required|boolean',
+            'is_featured' => 'nullable|boolean',
             'educations' => 'nullable|array',
+            'educations.*.degree' => 'nullable|string|max:255',
+            'educations.*.institution' => 'nullable|string|max:255',
+            'educations.*.passing_year' => 'nullable|string|max:4',
             'experiences' => 'nullable|array',
+            'experiences.*.designation' => 'nullable|string|max:255',
+            'experiences.*.institution' => 'nullable|string|max:255',
+            'experiences.*.start_date' => 'nullable|date',
+            'experiences.*.end_date' => 'nullable|date|after_or_equal:experiences.*.start_date',
+            'experiences.*.is_current' => 'nullable|boolean',
         ]);
 
         $this->service->updateDoctor($doctor, $validated);

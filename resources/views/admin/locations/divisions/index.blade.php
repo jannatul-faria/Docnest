@@ -1,70 +1,80 @@
 <x-admin-layout>
-    @section('header', 'Divisions')
+    <x-slot name="header">Divisions</x-slot>
 
-    <div class="space-y-6">
-        <!-- Header Action -->
-        <div class="flex justify-between items-center">
+    <div class="space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <h3 class="text-lg font-medium text-slate-900">Manage Divisions</h3>
-                <p class="text-sm text-slate-500 text-slate-500">Add, edit or remove divisions for doctor locations.</p>
+                <h1 class="text-2xl font-black text-heading tracking-tight">Manage Divisions</h1>
+                <p class="text-sm text-slate-500 font-medium">Add, edit or remove divisions for doctor locations</p>
             </div>
-            <a href="{{ route('admin.divisions.create') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-sm">
+            <a href="{{ route('admin.divisions.create') }}" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary/90 transition-all shadow-md shadow-primary/10">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                 Add Division
             </a>
         </div>
 
-        @if(session('success'))
-            <div class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 border border-green-100 flex items-center" role="alert">
-                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                {{ session('success') }}
+        <!-- Search Area -->
+        <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="relative flex-1 max-w-md">
+                <form action="{{ route('admin.divisions.index') }}" method="GET" class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <input type="text" name="search" value="{{ request('search') }}" 
+                        class="block w-full pl-9 pr-10 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50/50 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/10 focus:border-primary transition-all" 
+                        placeholder="Search divisions...">
+                </form>
             </div>
-        @endif
+            
+            <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                Total: {{ $divisions->total() }} Divisions
+            </div>
+        </div>
 
         <!-- Table Card -->
         <div class="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left text-slate-500">
-                    <thead class="text-xs text-slate-700 uppercase bg-slate-50 border-b border-slate-100">
+                    <thead class="text-[11px] text-slate-400 uppercase tracking-widest bg-slate-50/50 border-b border-slate-100 font-bold">
                         <tr>
-                            <th scope="col" class="px-6 py-4 font-semibold">Name</th>
-                            <th scope="col" class="px-6 py-4 font-semibold">Slug</th>
-                            <th scope="col" class="px-6 py-4 font-semibold text-center">Status</th>
-                            <th scope="col" class="px-6 py-4 font-semibold text-right">Actions</th>
+                            <th class="px-6 py-4 text-slate-600">Division Name</th>
+                            <th class="px-4 py-4 text-slate-600">Slug</th>
+                            <th class="px-4 py-4 text-center text-slate-600">Status</th>
+                            <th class="px-6 py-4 text-right text-slate-600">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @forelse($divisions as $division)
-                            <tr class="hover:bg-slate-50/50 transition-colors">
+                            <tr class="hover:bg-slate-50/30 transition-all duration-200">
                                 <td class="px-6 py-4">
-                                    <div class="font-medium text-slate-900">{{ $division->name }}</div>
+                                    <div class="font-bold text-slate-900 leading-tight group-hover:text-primary transition-colors">{{ $division->name }}</div>
                                 </td>
-                                <td class="px-6 py-4 font-mono text-xs text-slate-400">
-                                    {{ $division->slug }}
+                                <td class="px-4 py-4">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-500 border border-slate-200 uppercase tracking-tight">
+                                        {{ $division->slug }}
+                                    </span>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <div class="flex justify-center">
-                                        @if($division->status)
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                Active
-                                            </span>
-                                        @else
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
-                                                Inactive
-                                            </span>
-                                        @endif
-                                    </div>
+                                <td class="px-4 py-4 text-center">
+                                    @if($division->status)
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                            Active
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest bg-slate-100 text-slate-800 border border-slate-200">
+                                            Inactive
+                                        </span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 text-right">
-                                    <div class="flex justify-end space-x-2">
-                                        <a href="{{ route('admin.divisions.edit', $division) }}" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors" title="Edit">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                    <div class="flex justify-end space-x-1">
+                                        <a href="{{ route('admin.divisions.edit', $division) }}" class="p-1.5 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-all" title="Edit">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                         </a>
-                                        <form id="delete-form-{{ $division->id }}" action="{{ route('admin.divisions.destroy', $division) }}" method="POST">
+                                        <form id="delete-form-{{ $division->id }}" action="{{ route('admin.divisions.destroy', $division) }}" method="POST" class="inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" onclick="confirmDelete('delete-form-{{ $division->id }}', 'Are you sure you want to delete this division? This action will also remove all associated districts and areas.')" class="p-2 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors" title="Delete">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                            <button type="button" onclick="confirmDelete('delete-form-{{ $division->id }}')" class="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all" title="Delete">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                             </button>
                                         </form>
                                     </div>
@@ -72,11 +82,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-6 py-10 text-center">
-                                    <div class="flex flex-col items-center">
-                                        <svg class="w-12 h-12 text-slate-200 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                                        <p class="text-slate-500">No divisions found. Create your first one!</p>
-                                    </div>
+                                <td colspan="4" class="px-6 py-12 text-center text-slate-400 font-medium italic">
+                                    No divisions found matching your search.
                                 </td>
                             </tr>
                         @endforelse
@@ -90,4 +97,4 @@
             @endif
         </div>
     </div>
-</x-admin-layout>
+</x-admin-layout>

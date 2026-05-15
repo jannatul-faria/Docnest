@@ -10,7 +10,8 @@ class DepartmentService
 {
     public function __construct(
         protected DepartmentRepository $repository
-    ) {}
+    ) {
+    }
 
     public function getAllDepartments()
     {
@@ -20,10 +21,10 @@ class DepartmentService
     public function createDepartment(array $data)
     {
         $data['slug'] = Str::slug($data['name']);
-        
+
         // Handle image upload logic here if using Spatie Media Library
         // For now, we'll just create the record
-        
+
         return $this->repository->create($data);
     }
 

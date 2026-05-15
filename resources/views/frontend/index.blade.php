@@ -5,19 +5,19 @@
     <section class="relative pt-20 pb-32 overflow-hidden hero-gradient">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center max-w-4xl mx-auto mb-16">
-                <div class="inline-flex items-center px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 mb-8 animate-bounce">
-                    <span class="flex h-2 w-2 rounded-full bg-indigo-600 mr-3"></span>
-                    <span class="text-xs font-black text-indigo-700 uppercase tracking-widest">Find your trusted doctor today</span>
+                <div class="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8 animate-bounce">
+                    <span class="flex h-2 w-2 rounded-full bg-primary mr-3"></span>
+                    <span class="text-xs font-black text-primary uppercase tracking-widest">Find your trusted doctor today</span>
                 </div>
-                <h1 class="text-5xl md:text-7xl font-black text-slate-900 tracking-tight mb-8 leading-[1.1]">
-                    Your Journey to <span class="text-indigo-600">Better Health</span> Starts Here
+                <h1 class="text-5xl md:text-7xl font-black text-heading tracking-tight mb-8 leading-[1.1]">
+                    Your Journey to <span class="text-primary">Better Health</span> Starts Here
                 </h1>
                 <p class="text-xl text-slate-500 font-medium leading-relaxed mb-12 max-w-2xl mx-auto">
                     Discover and save top-rated doctors across all specialties. Read reviews, check availability, and build your personalized healthcare network.
                 </p>
 
                 <!-- Search Box -->
-                <form action="{{ route('doctors.index') }}" method="GET" class="max-w-3xl mx-auto p-2 bg-white rounded-[2rem] shadow-2xl shadow-indigo-100 border border-slate-100 flex flex-col md:flex-row items-center gap-2">
+                <form action="{{ route('doctors.index') }}" method="GET" class="max-w-3xl mx-auto p-2 bg-white rounded-[2rem] shadow-2xl shadow-primary/10 border border-slate-100 flex flex-col md:flex-row items-center gap-2">
                     <div class="flex-1 w-full flex items-center px-6 py-4">
                         <svg class="w-5 h-5 text-slate-300 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                         <input type="text" name="search" placeholder="Search Doctor, Specialty..." class="w-full border-none focus:ring-0 font-bold text-slate-700 placeholder-slate-300">
@@ -37,7 +37,7 @@
                             <!-- Results will be injected here -->
                         </div>
                     </div>
-                    <button type="submit" class="w-full md:w-auto px-10 py-4 bg-indigo-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200">
+                    <button type="submit" class="w-full md:w-auto px-10 py-4 bg-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
                         Search
                     </button>
                 </form>
@@ -66,16 +66,16 @@
     </section>
 
     <!-- Departments Section -->
-    <section id="departments" class="py-32 bg-white relative">
+    <section id="departments" class="py-20 bg-white relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-end mb-16">
                 <div class="max-w-2xl">
-                    <h2 class="text-sm font-black text-indigo-600 uppercase tracking-[0.3em] mb-4">Top Specialties</h2>
-                    <h3 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-                        Explore Doctors by <span class="text-indigo-600">Department</span>
+                    <h2 class="text-sm font-black text-primary uppercase tracking-[0.3em] mb-2">Top Specialties</h2>
+                    <h3 class="text-3xl md:text-4xl font-black text-heading tracking-tight leading-tight">
+                        Explore Doctors by <span class="text-primary">Department</span>
                     </h3>
                 </div>
-                <a href="#" class="mt-6 md:mt-0 inline-flex items-center text-sm font-bold text-slate-400 hover:text-indigo-600 transition-colors group">
+                <a href="#" class="mt-6 md:mt-0 inline-flex items-center text-sm font-bold text-slate-400 hover:text-primary transition-colors group">
                     View All Specializations
                     <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                 </a>
@@ -83,12 +83,12 @@
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 @foreach($departments as $dept)
-                    <a href="{{ route('doctors.index', ['department_id' => $dept->id]) }}" class="group p-8 bg-slate-50 hover:bg-indigo-600 rounded-[2.5rem] transition-all duration-500 border border-slate-100 hover:border-indigo-500 hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-indigo-200">
-                        <div class="h-16 w-16 bg-white group-hover:bg-indigo-500 rounded-2xl flex items-center justify-center mb-6 shadow-sm transition-colors">
-                            <svg class="w-8 h-8 text-indigo-600 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    <a href="{{ route('doctors.index', ['department_id' => $dept->id]) }}" class="group p-6 bg-slate-50 hover:bg-primary rounded-2xl transition-all duration-500 border border-slate-100 hover:border-primary hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-primary/20">
+                        <div class="h-14 w-14 bg-white group-hover:bg-primary/80 rounded-2xl flex items-center justify-center mb-4 shadow-sm transition-colors">
+                            <svg class="w-6 h-6 text-primary group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                         </div>
-                        <h4 class="text-xl font-black text-slate-900 group-hover:text-white transition-colors tracking-tight">{{ $dept->name }}</h4>
-                        <p class="text-sm font-bold text-slate-400 group-hover:text-indigo-200 transition-colors mt-2">{{ $dept->doctors_count }} Doctors</p>
+                        <h4 class="text-lg font-black text-heading group-hover:text-white transition-colors tracking-tight">{{ $dept->name }}</h4>
+                        <p class="text-[13px] font-bold text-slate-400 group-hover:text-primary-light transition-colors mt-1">{{ $dept->doctors_count }} Doctors</p>
                     </a>
                 @endforeach
             </div>
@@ -96,71 +96,69 @@
     </section>
 
     <!-- Featured Doctors Section -->
-    <section id="featured" class="py-32 bg-slate-50/50">
+    <section id="featured" class="py-20 bg-slate-50/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-20">
-                <h2 class="text-sm font-black text-indigo-600 uppercase tracking-[0.3em] mb-4">Handpicked for you</h2>
-                <h3 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-                    Discover Our <span class="text-indigo-600">Top-Rated</span> Doctors
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-sm font-black text-primary uppercase tracking-[0.3em] mb-2">Handpicked for you</h2>
+                <h3 class="text-3xl md:text-4xl font-black text-heading tracking-tight leading-tight">
+                    Discover Our <span class="text-primary">Top-Rated</span> Doctors
                 </h3>
-                <p class="text-slate-500 font-medium mt-6">
+                <p class="text-slate-500 text-sm font-medium mt-4">
                     Highly experienced professionals recognized for their excellence in patient care and medical expertise.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach($featuredDoctors as $doctor)
-                    <div class="group bg-white rounded-[3rem] p-8 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-indigo-100 transition-all duration-500 hover:translate-y-[-8px]">
-                        <div class="relative mb-8">
-                            <div class="aspect-[4/3] rounded-[2rem] overflow-hidden bg-slate-100">
-                                @if($doctor->hasMedia('profile_image'))
-                                    <img src="{{ $doctor->getFirstMediaUrl('profile_image') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                                @else
-                                    <div class="w-full h-full flex items-center justify-center text-slate-200">
-                                        <svg class="w-20 h-20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"></path></svg>
-                                    </div>
-                                @endif
+                    <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 border border-slate-100 flex flex-col">
+                        <!-- Image Area -->
+                        <div class="relative aspect-[4/3.5] overflow-hidden bg-slate-50">
+                            @if($doctor->hasMedia('profile_image'))
+                                <img src="{{ $doctor->getFirstMediaUrl('profile_image') }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                            @else
+                                <div class="w-full h-full flex items-center justify-center text-slate-200">
+                                    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"></path></svg>
+                                </div>
+                            @endif
+
+                            <div onclick="toggleWishlist(this, {{ $doctor->id }})" class="absolute top-3 right-3 h-8 w-8 rounded-xl flex items-center justify-center shadow-lg cursor-pointer transition-all {{ in_array($doctor->id, $wishlistedIds) ? 'bg-rose-500 text-white' : 'bg-white/90 backdrop-blur-sm text-rose-500 hover:bg-rose-50' }}" title="Add to Wishlist">
+                                <svg class="w-4 h-4 wishlist-icon" fill="{{ in_array($doctor->id, $wishlistedIds) ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                             </div>
-                            <div onclick="toggleWishlist(this, {{ $doctor->id }})" class="absolute top-4 right-4 h-10 w-10 rounded-xl flex items-center justify-center shadow-lg cursor-pointer transition-all {{ in_array($doctor->id, $wishlistedIds) ? 'bg-rose-500 text-white' : 'bg-white text-rose-500 hover:bg-rose-50' }}" title="Add to Wishlist">
-                                <svg class="w-6 h-6 wishlist-icon" fill="{{ in_array($doctor->id, $wishlistedIds) ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                            </div>
-                            <div class="absolute -bottom-4 left-6 px-4 py-2 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-lg shadow-lg">
+                            <div class="absolute bottom-3 left-3 px-3 py-1 bg-primary text-white text-[9px] font-black uppercase tracking-widest rounded-lg shadow-lg">
                                 {{ $doctor->department->name }}
                             </div>
                         </div>
 
-                        <h4 class="text-2xl font-black text-slate-900 mb-2 leading-tight"><a href="{{ route('doctors.show', $doctor->id) }}" class="hover:text-indigo-600 transition-colors">{{ $doctor->user->name }}</a></h4>
-                        <p class="text-sm font-bold text-slate-400 mb-3">{{ $doctor->specialization }}</p>
-                        @php $firstChamber = $doctor->chambers->first(); @endphp
-                        @if($firstChamber)
-                            <div class="flex items-center gap-2 mb-6">
-                                <svg class="w-4 h-4 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                <span class="text-xs font-bold text-slate-500">{{ $firstChamber->area->name }}, {{ $firstChamber->area->district->name }}</span>
-                            </div>
-                        @else
-                            <div class="mb-6"></div>
-                        @endif
-                        
-                        <div class="flex items-center justify-between pt-6 border-t border-slate-50">
-                            <div class="flex items-center text-amber-400">
-                                <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                <span class="ml-1 text-slate-900 font-black text-sm">{{ $doctor->average_rating }}</span>
-                                <span class="ml-1 text-slate-400 font-bold text-xs">({{ $doctor->reviews_count }} Reviews)</span>
-                            </div>
-                            <div class="text-slate-900 font-black text-sm">
-                                ${{ number_format($doctor->consultation_fee, 0) }}
+                        <!-- Content Area -->
+                        <div class="p-4 flex-1 flex flex-col">
+                            <h4 class="text-lg font-black text-slate-900 mb-0.5 tracking-tight leading-tight">
+                                <a href="{{ route('doctors.show', $doctor->id) }}" class="hover:text-primary transition-colors">
+                                    {{ $doctor->user->name }}
+                                </a>
+                            </h4>
+                            <p class="text-[10px] font-black text-rose-500 uppercase tracking-widest mb-2">
+                                {{ $doctor->department->name }}
+                            </p>
+                            
+                            <p class="text-[13px] font-bold text-slate-500 leading-snug line-clamp-2 mb-4">
+                                {{ $doctor->educations->pluck('degree')->implode(', ') }}
+                                @if($doctor->specialization)
+                                    - {{ $doctor->specialization }}
+                                @endif
+                            </p>
+
+                            <div class="mt-auto">
+                                <a href="{{ route('doctors.show', $doctor->id) }}" class="block w-full py-2.5 bg-slate-100 text-primary rounded-lg font-black text-[10px] uppercase tracking-widest text-center hover:bg-primary hover:text-white transition-all">
+                                    View Profile
+                                </a>
                             </div>
                         </div>
-
-                        <a href="{{ route('doctors.show', $doctor->id) }}" class="mt-8 block w-full py-4 bg-slate-900 text-white rounded-2xl font-black text-sm uppercase tracking-widest text-center hover:bg-indigo-600 transition-all shadow-xl shadow-slate-200">
-                            View Profile
-                        </a>
                     </div>
                 @endforeach
             </div>
 
             <div class="mt-16 text-center">
-                <a href="{{ route('doctors.index') }}" class="inline-flex items-center px-10 py-4 border-2 border-slate-200 text-slate-600 rounded-2xl font-black text-sm uppercase tracking-widest hover:border-indigo-600 hover:text-indigo-600 transition-all">
+                <a href="{{ route('doctors.index') }}" class="inline-flex items-center px-10 py-4 border-2 border-slate-200 text-slate-600 rounded-2xl font-black text-sm uppercase tracking-widest hover:border-primary hover:text-primary transition-all">
                     Show All Doctors
                 </a>
             </div>
@@ -168,24 +166,24 @@
     </section>
 
     <!-- Stats Section -->
-    <section class="py-24 bg-indigo-600 relative overflow-hidden">
+    <section class="py-24 bg-primary relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
                 <div class="space-y-2">
                     <div class="text-4xl md:text-6xl font-black text-white tracking-tighter">500+</div>
-                    <div class="text-indigo-200 text-xs font-black uppercase tracking-widest">Specialist Doctors</div>
+                    <div class="text-white/60 text-xs font-black uppercase tracking-widest">Specialist Doctors</div>
                 </div>
                 <div class="space-y-2">
                     <div class="text-4xl md:text-6xl font-black text-white tracking-tighter">25+</div>
-                    <div class="text-indigo-200 text-xs font-black uppercase tracking-widest">Medical Branches</div>
+                    <div class="text-white/60 text-xs font-black uppercase tracking-widest">Medical Branches</div>
                 </div>
                 <div class="space-y-2">
                     <div class="text-4xl md:text-6xl font-black text-white tracking-tighter">10k+</div>
-                    <div class="text-indigo-200 text-xs font-black uppercase tracking-widest">Satisfied Users</div>
+                    <div class="text-white/60 text-xs font-black uppercase tracking-widest">Satisfied Users</div>
                 </div>
                 <div class="space-y-2">
                     <div class="text-4xl md:text-6xl font-black text-white tracking-tighter">4.9</div>
-                    <div class="text-indigo-200 text-xs font-black uppercase tracking-widest">Average Rating</div>
+                    <div class="text-white/60 text-xs font-black uppercase tracking-widest">Average Rating</div>
                 </div>
             </div>
         </div>
@@ -199,15 +197,15 @@
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
                 <div class="relative z-10">
-                    <h3 class="text-4xl md:text-5xl font-black text-white mb-8 tracking-tight">Are You a <span class="text-indigo-400">Professional</span> Doctor?</h3>
+                    <h3 class="text-4xl md:text-5xl font-black text-white mb-8 tracking-tight">Are You a <span class="text-primary/80">Professional</span> Doctor?</h3>
                     <p class="text-slate-400 text-lg mb-12 max-w-2xl mx-auto font-medium">
                         Join our network of healthcare providers and reach thousands of patients looking for your expertise.
                     </p>
                     <div class="flex flex-col md:flex-row justify-center gap-4">
-                        <a href="{{ route('register') }}" class="px-12 py-5 bg-indigo-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-900/50">
+                        <a href="{{ route('register') }}" class="px-12 py-5 bg-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-xl shadow-primary/20">
                             Apply as Doctor
                         </a>
-                        <a href="#" class="px-12 py-5 bg-white text-slate-900 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-50 transition-all">
+                        <a href="#" class="px-12 py-5 bg-white text-heading rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-50 transition-all">
                             Learn More
                         </a>
                     </div>

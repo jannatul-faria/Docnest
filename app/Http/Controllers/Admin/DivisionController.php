@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Division;
 use App\Services\LocationService;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class DivisionController extends Controller
 {
@@ -14,9 +15,9 @@ class DivisionController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $divisions = $this->service->getAllDivisions();
+        $divisions = $this->service->getAllDivisions($request->only('search'));
         return view('admin.locations.divisions.index', compact('divisions'));
     }
 

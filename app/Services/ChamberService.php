@@ -12,9 +12,9 @@ class ChamberService
         protected ChamberRepository $repository
     ) {}
 
-    public function getAllChambers()
+    public function getAllChambers(array $filters = [])
     {
-        return $this->repository->getAllPaginated();
+        return $this->repository->getAllPaginated($filters);
     }
 
     public function createChamber(array $data)

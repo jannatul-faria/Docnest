@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Services\DepartmentService;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class DepartmentController extends Controller
 {
     public function __construct(
         protected DepartmentService $service
-    ) {}
+    ) {
+    }
 
-    public function index()
+    public function index(Request $request)
     {
-        $departments = $this->service->getAllDepartments();
+        $departments = $this->service->getAllDepartments($request->only('search'));
         return view('admin.departments.index', compact('departments'));
     }
 

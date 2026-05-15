@@ -7,17 +7,22 @@ use App\Models\Chamber;
 use App\Models\Doctor;
 use App\Models\Division;
 use App\Services\ChamberService;
+use App\Services\DoctorService;
+use App\Services\LocationService;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class ChamberController extends Controller
 {
     public function __construct(
-        protected ChamberService $service
+        protected ChamberService $service,
+        protected DoctorService $doctorService,
+        protected LocationService $locationService
     ) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $chambers = $this->service->getAllChambers();
+        $chambers = $this->service->getAllChambers($request->only('search'));
         return view('admin.chambers.index', compact('chambers'));
     }
 

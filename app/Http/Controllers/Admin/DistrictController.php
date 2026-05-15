@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\District;
 use App\Services\LocationService;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class DistrictController extends Controller
 {
@@ -14,9 +15,9 @@ class DistrictController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $districts = $this->service->getAllDistricts();
+        $districts = $this->service->getAllDistricts($request->only('search'));
         return view('admin.locations.districts.index', compact('districts'));
     }
 

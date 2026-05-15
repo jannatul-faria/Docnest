@@ -1,300 +1,353 @@
 <x-frontend-layout>
-    <x-slot:title>{{ $doctor->user->name }} - {{ $doctor->specialization }} | DocNest</x-slot:title>
+    <x-slot:title>{{ $doctor->user->name }} - {{ $doctor->department->name }} | DocNest</x-slot:title>
 
-    <section class="py-12 bg-slate-50/50 min-h-screen">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Breadcrumbs -->
-            <nav class="flex mb-8 text-sm font-bold uppercase tracking-widest text-slate-400">
-                <a href="{{ route('home') }}" class="hover:text-indigo-600 transition-colors">Home</a>
-                <span class="mx-3 text-slate-200">/</span>
-                <a href="{{ route('doctors.index') }}" class="hover:text-indigo-600 transition-colors">Doctors</a>
-                <span class="mx-3 text-slate-200">/</span>
-                <span class="text-slate-900">{{ $doctor->user->name }}</span>
-            </nav>
+    <div class="py-6 bg-[#f0f5f9] min-h-screen font-outfit">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
-                <!-- Left Column: Profile Card & Info -->
-                <div class="lg:col-span-4 space-y-8">
-                    <div class="bg-white rounded-[3rem] p-8 border border-slate-100 shadow-sm relative overflow-hidden">
-                        <div class="relative z-10">
-                            <div class="aspect-square rounded-[2.5rem] overflow-hidden bg-slate-100 mb-8 border-4 border-slate-50 shadow-inner">
+            <!-- Top Doctor Profile Card -->
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-6 border border-slate-100">
+                <div class="p-5 md:p-6">
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <!-- Profile Image -->
+                        <div class="w-full md:w-64 flex-shrink-0">
+                            <div class="aspect-[4/4.5] rounded-xl overflow-hidden border-4 border-white shadow-md">
                                 @if($doctor->hasMedia('profile_image'))
-                                    <img src="{{ $doctor->getFirstMediaUrl('profile_image') }}" class="w-full h-full object-cover">
+                                    <img src="{{ $doctor->getFirstMediaUrl('profile_image') }}"
+                                        class="w-full h-full object-cover">
                                 @else
-                                    <div class="w-full h-full flex items-center justify-center text-slate-200">
-                                        <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"></path></svg>
+                                    <div class="w-full h-full bg-slate-100 flex items-center justify-center">
+                                        <svg class="w-24 h-24 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z">
+                                            </path>
+                                        </svg>
                                     </div>
                                 @endif
                             </div>
-
-                            <div class="text-center mb-8">
-                                <h1 class="text-3xl font-black text-slate-900 mb-2 leading-tight">{{ $doctor->user->name }}</h1>
-                                <p class="text-sm font-black text-indigo-600 uppercase tracking-[0.2em] mb-3">{{ $doctor->department->name }}</p>
-                                @php $firstChamber = $doctor->chambers->first(); @endphp
-                                @if($firstChamber)
-                                    <div class="flex items-center justify-center gap-1.5 mb-5">
-                                        <svg class="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                        <span class="text-xs font-bold text-slate-500">{{ $firstChamber->area->name }}, {{ $firstChamber->area->district->name }}, {{ $firstChamber->area->district->division->name }}</span>
-                                    </div>
-                                @else
-                                    <div class="mb-5"></div>
-                                @endif
-                                
-                                <div class="flex items-center justify-center space-x-1 text-amber-400 mb-6">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        <svg class="w-5 h-5 {{ $i <= round($doctor->average_rating) ? 'fill-current' : 'text-slate-200' }}" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                    @endfor
-                                    <span class="ml-2 text-slate-900 font-black text-sm">{{ $doctor->average_rating }}</span>
-                                    <span class="text-slate-400 font-bold text-xs">({{ $doctor->reviews_count }} Reviews)</span>
-                                </div>
-
-                                <div class="flex gap-3">
-                                    <button onclick="toggleWishlist(this, {{ $doctor->id }})" class="flex-1 py-4 px-6 rounded-2xl font-black text-xs uppercase tracking-widest transition-all {{ in_array($doctor->id, $wishlistedIds) ? 'bg-rose-500 text-white shadow-xl shadow-rose-200' : 'bg-rose-50 text-rose-500 hover:bg-rose-100' }}">
-                                        {{ in_array($doctor->id, $wishlistedIds) ? 'Saved' : 'Wishlist' }}
-                                    </button>
-                                    <a href="#appointment" class="flex-[2] py-4 px-6 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-widest text-center hover:bg-indigo-600 transition-all shadow-xl shadow-slate-200">
-                                        Book Consultation
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="space-y-4 pt-8 border-t border-slate-50">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Experience</span>
-                                    <span class="text-sm font-black text-slate-900">{{ $doctor->experience_years }} Years</span>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Consultation Fee</span>
-                                    <span class="text-sm font-black text-slate-900">${{ number_format($doctor->consultation_fee, 0) }}</span>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Specialization</span>
-                                    <span class="text-sm font-black text-slate-900">{{ $doctor->specialization }}</span>
-                                </div>
-                                @if($firstChamber)
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Location</span>
-                                    <span class="text-sm font-black text-slate-900 text-right">{{ $firstChamber->area->district->name }}</span>
-                                </div>
-                                @endif
-                            </div>
                         </div>
-                        <!-- Decoration -->
-                        <div class="absolute -top-12 -right-12 w-32 h-32 bg-indigo-50 rounded-full blur-2xl"></div>
-                    </div>
 
-                    <!-- Social & Contact Placeholder -->
-                    <div class="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm">
-                        <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest mb-6">Connect with Doctor</h4>
-                        <div class="flex space-x-4">
-                            @php $socials = $doctor->social_links ?? []; @endphp
-                            <a href="{{ $socials['facebook'] ?? '#' }}" class="h-12 w-12 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-indigo-600 hover:text-white transition-all">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
-                            </a>
-                            <a href="{{ $socials['linkedin'] ?? '#' }}" class="h-12 w-12 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-indigo-600 hover:text-white transition-all">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                        <!-- Doctor Info -->
+                        <div class="flex-grow flex flex-col justify-between">
+                            <div>
+                                <h1 class="text-2xl font-bold text-[#008a44] mb-1">{{ $doctor->user->name }}</h1>
 
-                <!-- Right Column: Details, Chambers, Reviews -->
-                <div class="lg:col-span-8 space-y-12">
-                    <!-- About -->
-                    <div class="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-sm">
-                        <h3 class="text-2xl font-black text-slate-900 mb-6 tracking-tight">Biography</h3>
-                        <p class="text-slate-500 leading-relaxed font-medium">
-                            {{ $doctor->bio ?? 'No biography provided yet.' }}
-                        </p>
-                    </div>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <svg class="w-4 h-4 text-[#008a44]" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                        </path>
+                                    </svg>
+                                    <span
+                                        class="text-lg font-semibold text-[#1e293b]">{{ $doctor->department->name }}</span>
+                                </div>
 
-                    <!-- Chambers & Schedules -->
-                    <div id="appointment">
-                        <h3 class="text-2xl font-black text-slate-900 mb-8 tracking-tight px-4">Available Chambers</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            @foreach($doctor->chambers as $chamber)
-                                <div class="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-indigo-100/30 transition-all duration-500">
-                                    <div class="flex items-start justify-between mb-6">
-                                        <div>
-                                            <h4 class="text-xl font-black text-slate-900 mb-1">{{ $chamber->name }}</h4>
-                                            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">{{ $chamber->area->name }}, {{ $chamber->area->district->name }}</p>
-                                        </div>
-                                        <div class="h-10 w-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                        </div>
-                                    </div>
-                                    <p class="text-sm text-slate-500 font-medium mb-8 leading-relaxed">{{ $chamber->address }}</p>
-                                    
-                                    <div class="space-y-3">
-                                        <h5 class="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-3">Schedules</h5>
-                                        @foreach($chamber->schedules as $schedule)
-                                            <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
-                                                <span class="text-xs font-black text-slate-700">{{ $schedule->day }}</span>
-                                                <span class="text-xs font-bold text-indigo-600">{{ \Carbon\Carbon::parse($schedule->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($schedule->end_time)->format('h:i A') }}</span>
-                                            </div>
-                                        @endforeach
+                                <div class="text-[#64748b] text-sm leading-relaxed mb-4 max-w-2xl">
+                                    <p class="font-medium">{{ $doctor->specialization }}</p>
+                                    <p class="mt-0.5">{{ $doctor->hospital_name }}</p>
+                                </div>
+
+                                <div
+                                    class="flex flex-wrap items-center gap-x-6 gap-y-3 mb-4 py-3 border-y border-slate-100">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-[#94a3b8] font-medium text-sm">Consultation Fee:</span>
+                                        <span
+                                            class="text-rose-600 font-black text-xl">{{ number_format($doctor->consultation_fee, 0) }}
+                                            BDT</span>
                                     </div>
                                 </div>
-                            @endforeach
-                        </div>
-                    </div>
 
-                    <!-- Education & Experience -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- Education -->
-                        <div class="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-sm">
-                            <h3 class="text-xl font-black text-slate-900 mb-8 tracking-tight flex items-center">
-                                <span class="h-8 w-8 bg-indigo-50 text-indigo-600 rounded-lg flex items-center justify-center mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path></svg>
-                                </span>
-                                Education
-                            </h3>
-                            <div class="space-y-8 relative before:absolute before:left-[15px] before:top-2 before:bottom-2 before:w-px before:bg-slate-100">
-                                @foreach($doctor->educations as $edu)
-                                    <div class="pl-10 relative">
-                                        <div class="absolute left-0 top-1 h-8 w-8 bg-white border-2 border-indigo-600 rounded-full z-10"></div>
-                                        <h4 class="text-sm font-black text-slate-900 mb-1">{{ $edu->degree }}</h4>
-                                        <p class="text-xs font-bold text-slate-500 mb-2">{{ $edu->institution }}</p>
-                                        <span class="inline-block px-2 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black rounded">{{ $edu->passing_year }}</span>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <!-- Experience -->
-                        <div class="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-sm">
-                            <h3 class="text-xl font-black text-slate-900 mb-8 tracking-tight flex items-center">
-                                <span class="h-8 w-8 bg-rose-50 text-rose-600 rounded-lg flex items-center justify-center mr-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                </span>
-                                Experience
-                            </h3>
-                            <div class="space-y-8 relative before:absolute before:left-[15px] before:top-2 before:bottom-2 before:w-px before:bg-slate-100">
-                                @foreach($doctor->experiences as $exp)
-                                    <div class="pl-10 relative">
-                                        <div class="absolute left-0 top-1 h-8 w-8 bg-white border-2 border-rose-500 rounded-full z-10"></div>
-                                        <h4 class="text-sm font-black text-slate-900 mb-1">{{ $exp->designation }}</h4>
-                                        <p class="text-xs font-bold text-slate-500 mb-2">{{ $exp->institution }}</p>
-                                        <span class="inline-block px-2 py-1 bg-rose-50 text-rose-500 text-[10px] font-black rounded">{{ $exp->start_date }} - {{ $exp->end_date ?? 'Present' }}</span>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Reviews -->
-                    <div class="bg-white rounded-[3rem] p-10 border border-slate-100 shadow-sm">
-                        <div class="flex justify-between items-center mb-10">
-                            <h3 class="text-2xl font-black text-slate-900 tracking-tight">Patient Reviews</h3>
-                            @auth
-                                <button onclick="document.getElementById('review-form').classList.toggle('hidden')" class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-xs font-black uppercase tracking-widest hover:bg-indigo-700 transition-all">Write a Review</button>
-                            @endauth
-                        </div>
-
-                        <!-- Review Form -->
-                        <div id="review-form" class="hidden mb-12 p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100">
-                            <form action="{{ route('reviews.store') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="doctor_id" value="{{ $doctor->id }}">
-                                <div class="mb-6">
-                                    <label class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 block">Your Rating</label>
-                                    <div class="flex space-x-2 star-rating">
+                                <div class="flex items-center gap-2 mb-6">
+                                    <div class="flex text-amber-400">
                                         @for($i = 1; $i <= 5; $i++)
-                                            <input type="radio" name="rating" id="star{{ $i }}" value="{{ $i }}" class="hidden" required>
-                                            <label for="star{{ $i }}" class="cursor-pointer text-slate-300 hover:text-amber-400 transition-colors">
-                                                <svg class="w-8 h-8 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                            </label>
+                                            <svg class="w-5 h-5 {{ $i <= round($doctor->average_rating) ? 'fill-current' : 'text-slate-200' }}"
+                                                viewBox="0 0 20 20">
+                                                <path
+                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                </path>
+                                            </svg>
                                         @endfor
                                     </div>
+                                    <span class="text-[#3b82f6] font-bold text-sm">Rating:
+                                        {{ $doctor->average_rating }}/5</span>
                                 </div>
-                                <div class="mb-6">
-                                    <label class="text-xs font-black text-slate-400 uppercase tracking-widest mb-3 block">Your Experience</label>
-                                    <textarea name="comment" rows="4" placeholder="Share your experience with this doctor..." class="w-full bg-white border-none rounded-2xl focus:ring-2 focus:ring-indigo-500 font-medium text-slate-700 p-4" required></textarea>
-                                </div>
-                                <button type="submit" class="w-full py-4 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100">Submit Review</button>
-                            </form>
-                        </div>
+                            </div>
 
-                        <div class="space-y-8">
-                            @forelse($doctor->reviews->where('status', true) as $review)
-                                <div class="p-6 bg-slate-50 rounded-3xl border border-slate-100">
-                                    <div class="flex justify-between items-start mb-4">
-                                        <div class="flex items-center">
-                                            <div class="h-10 w-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-black text-xs mr-3">
-                                                {{ strtoupper(substr($review->user->name, 0, 1)) }}
-                                            </div>
-                                            <div>
-                                                <h5 class="text-sm font-black text-slate-900">{{ $review->user->name }}</h5>
-                                                <span class="text-[10px] font-bold text-slate-400">{{ $review->created_at->diffForHumans() }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="flex text-amber-400">
-                                            @for($i = 1; $i <= 5; $i++)
-                                                <svg class="w-4 h-4 {{ $i <= $review->rating ? 'fill-current' : 'text-slate-200' }}" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
-                                            @endfor
-                                        </div>
+                            <div class="flex flex-col items-end gap-3">
+                                <div class="text-right">
+                                    <p class="text-[#94a3b8] italic text-xs mb-1">Or make a call</p>
+                                    <a href="tel:{{ $doctor->chambers->first()->phone ?? '' }}"
+                                        class="flex items-center gap-2 justify-end text-[#2b66f2] hover:underline">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                            </path>
+                                        </svg>
+                                        <span
+                                            class="text-2xl font-black tracking-tight">+{{ $doctor->chambers->first()->phone ?? '8801700-000000' }}</span>
+                                    </a>
+                                    <div class="flex items-center gap-3 justify-end mt-3">
+                                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $doctor->chambers->first()->phone ?? '') }}"
+                                            target="_blank"
+                                            class="flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white rounded-full text-xs font-bold hover:bg-[#128C7E] transition-all">
+                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                                <path
+                                                    d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.438 9.889-9.886.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.149-.174.198-.298.297-.497.099-.198.05-.372-.025-.521-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z" />
+                                            </svg>
+                                            Chat on WhatsApp
+                                        </a>
+                                        <a href="tel:{{ $doctor->chambers->first()->phone ?? '' }}"
+                                            class="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-full text-xs font-bold hover:bg-slate-200 transition-all">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
+                                                </path>
+                                            </svg>
+                                            Call Now
+                                        </a>
                                     </div>
-                                    <p class="text-sm text-slate-600 font-medium leading-relaxed">
-                                        {{ $review->comment }}
+                                    @php
+                                        $firstSchedule = $doctor->chambers->first()?->schedules->first();
+                                    @endphp
+                                    <p class="text-[#64748b] text-sm mt-2">
+                                        @if($firstSchedule)
+                                            {{ \Carbon\Carbon::parse($firstSchedule->start_time)->format('h:i A') }} to
+                                            {{ \Carbon\Carbon::parse($firstSchedule->end_time)->format('h:i A') }} (Friday
+                                            Off)
+                                        @else
+                                            {{ __('')}}
+                                        @endif
                                     </p>
                                 </div>
-                            @empty
-                                <div class="text-center py-12">
-                                    <p class="text-slate-400 font-bold italic">No reviews yet. Be the first to share your experience!</p>
-                                </div>
-                            @endforelse
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Bottom Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+                <!-- Chamber Schedule (Left) -->
+                <div class="lg:col-span-4 bg-white rounded-xl shadow-sm overflow-hidden border border-slate-100">
+                    <div class="bg-[#008a44] text-white p-3 flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <h2 class="font-bold text-sm tracking-wider uppercase">Chamber Schedule</h2>
+                    </div>
+                    <div class="divide-y divide-slate-100">
+                        @php
+                            $days = ['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+                            $schedules = $doctor->chambers->first()?->schedules->groupBy('day') ?? collect();
+                        @endphp
+                        @foreach($days as $day)
+                            <div class="p-4 hover:bg-slate-50 transition-colors">
+                                <div class="flex items-start gap-2">
+                                    <svg class="w-3.5 h-3.5 text-[#008a44] mt-0.5" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                        </path>
+                                    </svg>
+                                    <div>
+                                        <h3 class="font-bold text-[#1e293b] text-xs">{{ $day }}</h3>
+                                        <p class="text-[#64748b] text-[11px] mt-0.5">
+                                            @if($schedules->has($day))
+                                                @foreach($schedules->get($day) as $sch)
+                                                    {{ \Carbon\Carbon::parse($sch->start_time)->format('h:i A') }} to
+                                                    {{ \Carbon\Carbon::parse($sch->end_time)->format('h:i A') }}
+                                                    @if(!$loop->last), @endif
+                                                @endforeach
+                                            @else
+                                                Closed
+                                            @endif
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Diseases and Address (Right) -->
+                <div class="lg:col-span-8 space-y-6">
+
+                    <!-- Diseases Treated -->
+                    <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-slate-100">
+                        <div class="bg-[#008a44] text-white p-3 flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <h2 class="font-bold text-sm tracking-wider uppercase">The Diseases That Are Treated</h2>
+                        </div>
+                        <div class="p-5">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+                                @php
+                                    // Split bio by commas or newlines if it looks like a list, otherwise use defaults for visual fidelity
+                                    $diseases = [];
+                                    if ($doctor->bio) {
+                                        $diseases = preg_split('/[,\n]/', $doctor->bio, -1, PREG_SPLIT_NO_EMPTY);
+                                    }
+
+                                    // If no diseases found in bio, use some relevant placeholders matching the specialty
+                                    if (count($diseases) < 2) {
+                                        $diseases = [
+                                            'General Consultations',
+                                            'Routine Health Checkups',
+                                            'Disease Management',
+                                            'Patient Counseling',
+                                            'Diagnostic Reviews',
+                                            'Treatment Planning'
+                                        ];
+                                    }
+                                @endphp
+                                @foreach($diseases as $disease)
+                                    <div class="flex items-start gap-3">
+                                        <div
+                                            class="mt-0.5 flex-shrink-0 w-5 h-5 rounded bg-green-50 flex items-center justify-center border border-green-100">
+                                            <svg class="w-3 h-3 text-[#008a44]" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-[#334155] text-sm font-semibold leading-snug">{{ trim($disease) }}</span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chamber Address -->
+                    <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-slate-100">
+                        <div class="bg-[#005c3b] text-white p-3 flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <h2 class="font-bold text-sm tracking-wider uppercase">Chamber Address</h2>
+                        </div>
+                        <div class="p-5">
+                            @php $firstChamber = $doctor->chambers->first(); @endphp
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100">
+                                    <svg class="w-6 h-6 text-[#008a44]" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-[#1e293b] mb-1">
+                                        {{ $firstChamber->name ?? 'No Chamber Added' }}
+                                    </h3>
+                                    <p class="text-[#64748b] text-sm font-medium leading-relaxed mb-2">
+                                        {{ $firstChamber->address ?? 'Address not available' }}
+                                        @if($firstChamber && $firstChamber->area)
+                                            , {{ $firstChamber->area->name }}, {{ $firstChamber->area->district->name }}
+                                        @endif
+                                    </p>
+                                    <a href="https://www.google.com/maps/search/{{ urlencode(($firstChamber->name ?? '') . ' ' . ($firstChamber->address ?? '')) }}"
+                                        target="_blank"
+                                        class="inline-flex items-center gap-1 text-[#008a44] font-bold hover:underline decoration-2 underline-offset-4">
+                                        View on Google Maps
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                            </path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Other Sections (Bio, Experience, etc.) -->
+            <div class="mt-8 space-y-6">
+                @if($doctor->reviews_count > 0)
+                    <div class="bg-white rounded-xl shadow-sm p-5 border border-slate-100">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-bold text-[#1e293b]">Patient Reviews</h3>
+                            <a href="#book" class="text-[#008a44] text-sm font-bold hover:underline">Write a Review</a>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            @foreach($doctor->reviews->where('status', true)->take(4) as $review)
+                                <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 relative">
+                                    <div class="flex justify-between items-start mb-3">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xs font-bold">
+                                                {{ strtoupper(substr($review->user->name, 0, 1)) }}
+                                            </div>
+                                            <div>
+                                                <h5 class="font-bold text-[#1e293b] text-sm">{{ $review->user->name }}</h5>
+                                                <span
+                                                    class="text-[10px] text-slate-400 font-medium">{{ $review->created_at->diffForHumans() }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex text-amber-400">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                <svg class="w-4 h-4 {{ $i <= $review->rating ? 'fill-current' : 'text-slate-200' }}"
+                                                    viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                    </path>
+                                                </svg>
+                                            @endfor
+                                        </div>
+                                    </div>
+                                    <p class="text-slate-600 font-medium text-sm italic leading-relaxed">
+                                        "{{ $review->comment }}"</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            </div>
+
         </div>
-    </section>
+    </div>
 
     @push('scripts')
-    <script>
-        // Star Rating Selection
-        const starLabels = document.querySelectorAll('.star-rating label');
-        starLabels.forEach((label, index) => {
-            label.addEventListener('click', () => {
-                starLabels.forEach((l, i) => {
-                    if (i <= index) {
-                        l.classList.remove('text-slate-300');
-                        l.classList.add('text-amber-400');
-                    } else {
-                        l.classList.remove('text-amber-400');
-                        l.classList.add('text-slate-300');
-                    }
-                });
-            });
-        });
+        <script>
+            function toggleWishlist(el, doctorId) {
+                @guest
+                    window.location.href = "{{ route('login') }}";
+                    return;
+                @endguest
 
-        function toggleWishlist(el, doctorId) {
-            @guest
-                window.location.href = "{{ route('login') }}";
-                return;
-            @endguest
-
-            fetch("{{ route('wishlist.toggle') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: JSON.stringify({ doctor_id: doctorId })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'added') {
-                    el.classList.remove('bg-rose-50', 'text-rose-500', 'hover:bg-rose-100');
-                    el.classList.add('bg-rose-500', 'text-white', 'shadow-xl', 'shadow-rose-200');
-                    el.innerText = 'Saved';
-                } else {
-                    el.classList.remove('bg-rose-500', 'text-white', 'shadow-xl', 'shadow-rose-200');
-                    el.classList.add('bg-rose-50', 'text-rose-500', 'hover:bg-rose-100');
-                    el.innerText = 'Wishlist';
-                }
-            });
-        }
-    </script>
+                fetch("{{ route('wishlist.toggle') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({ doctor_id: doctorId })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'added') {
+                            el.classList.remove('bg-rose-50', 'text-rose-500', 'hover:bg-rose-100');
+                            el.classList.add('bg-rose-500', 'text-white', 'shadow-xl', 'shadow-rose-200');
+                            el.innerText = 'Saved';
+                        } else {
+                            el.classList.remove('bg-rose-500', 'text-white', 'shadow-xl', 'shadow-rose-200');
+                            el.classList.add('bg-rose-50', 'text-rose-500', 'hover:bg-rose-100');
+                            el.innerText = 'Wishlist';
+                        }
+                    });
+            }
+        </script>
     @endpush
 </x-frontend-layout>

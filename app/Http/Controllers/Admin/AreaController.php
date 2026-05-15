@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Services\LocationService;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class AreaController extends Controller
 {
@@ -14,9 +15,9 @@ class AreaController extends Controller
     ) {
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $areas = $this->service->getAllAreas();
+        $areas = $this->service->getAllAreas($request->only('search'));
         return view('admin.locations.areas.index', compact('areas'));
     }
 
