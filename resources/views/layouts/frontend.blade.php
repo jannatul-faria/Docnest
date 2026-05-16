@@ -34,7 +34,7 @@
             }
             return "$r, $g, $b";
         }
-        $primaryColor = get_setting('primary_color', '#008947');
+        $primaryColor = get_setting('primary_color', '#008459');
         $headingColor = get_setting('heading_color', '#0f172a');
         $primaryRgb = hexToRgb($primaryColor);
         $headingRgb = hexToRgb($headingColor);

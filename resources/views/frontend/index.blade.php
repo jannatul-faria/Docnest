@@ -1,333 +1,479 @@
 <x-frontend-layout>
-    <x-slot:title>DocNest - Find and Discovery Best Doctors</x-slot:title>
+    <x-slot:title>DocNest - Search The Best Doctors</x-slot:title>
 
     <!-- Hero Section -->
-    <section class="relative pt-20 pb-32 overflow-hidden hero-gradient">
+    <section class="relative pt-12 pb-20 overflow-hidden bg-slate-50/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center max-w-4xl mx-auto mb-16">
-                <div class="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-8 animate-bounce">
-                    <span class="flex h-2 w-2 rounded-full bg-primary mr-3"></span>
-                    <span class="text-xs font-black text-primary uppercase tracking-widest">Find your trusted doctor today</span>
-                </div>
-                <h1 class="text-5xl md:text-7xl font-black text-heading tracking-tight mb-8 leading-[1.1]">
-                    Your Journey to <span class="text-primary">Better Health</span> Starts Here
-                </h1>
-                <p class="text-xl text-slate-500 font-medium leading-relaxed mb-12 max-w-2xl mx-auto">
-                    Discover and save top-rated doctors across all specialties. Read reviews, check availability, and build your personalized healthcare network.
-                </p>
-
-                <!-- Search Box -->
-                <form action="{{ route('doctors.index') }}" method="GET" class="max-w-3xl mx-auto p-2 bg-white rounded-[2rem] shadow-2xl shadow-primary/10 border border-slate-100 flex flex-col md:flex-row items-center gap-2">
-                    <div class="flex-1 w-full flex items-center px-6 py-4">
-                        <svg class="w-5 h-5 text-slate-300 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                        <input type="text" name="search" placeholder="Search Doctor, Specialty..." class="w-full border-none focus:ring-0 font-bold text-slate-700 placeholder-slate-300">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div class="max-w-xl">
+                    <div
+                        class="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
+                        <span class="flex h-2 w-2 rounded-full bg-primary mr-2 animate-pulse"></span>
+                        <span class="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Leading Healthcare
+                            Network</span>
                     </div>
-                    <div class="hidden md:block w-px h-10 bg-slate-100"></div>
-                    <div class="flex-[1.5] w-full flex flex-col relative">
-                        <div class="flex items-center px-6 py-4 h-full">
-                            <svg class="w-5 h-5 text-slate-300 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                            <input type="text" id="location-search" placeholder="Enter Location (City, Area...)" class="w-full border-none focus:ring-0 font-bold text-slate-700 placeholder-slate-300 bg-transparent" autocomplete="off">
-                            <input type="hidden" name="division_id" id="hidden-division-id">
-                            <input type="hidden" name="district_id" id="hidden-district-id">
-                            <input type="hidden" name="area_id" id="hidden-area-id">
+                    <h1 class="text-5xl md:text-6xl font-black text-[#0f172a] tracking-tight mb-6 leading-[1.1]">
+                        Search The <br>
+                        <span class="text-primary italic">Best Doctors</span>
+                    </h1>
+                    <p class="text-slate-500 font-medium leading-relaxed mb-10 text-sm max-w-md">
+                        Experience world-class healthcare with our network of certified specialists. Read reviews, check
+                        availability, and build your personalized healthcare network.
+                    </p>
+
+                    <!-- Search Box Grid -->
+                    <form action="{{ route('doctors.index') }}" method="GET"
+                        class="bg-white p-6 rounded-[2.5rem] shadow-2xl shadow-primary/5 border border-slate-100">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <!-- Division -->
+                            <div class="relative group">
+                                <label
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-4">Division</label>
+                                <div class="relative">
+                                    <select name="division_id" id="division-select"
+                                        class="w-full pl-12 pr-6 py-3.5 bg-slate-50 border-none rounded-2xl text-xs font-bold text-slate-700 focus:ring-2 focus:ring-primary/20 appearance-none transition-all">
+                                        <option value="">Select Division</option>
+                                        @foreach($divisions as $division)
+                                            <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-primary">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                        <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- District -->
+                            <div class="relative group">
+                                <label
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-4">District</label>
+                                <div class="relative">
+                                    <select name="district_id" id="district-select"
+                                        class="w-full pl-12 pr-6 py-3.5 bg-slate-50 border-none rounded-2xl text-xs font-bold text-slate-700 focus:ring-2 focus:ring-primary/20 appearance-none transition-all">
+                                        <option value="">Select District</option>
+                                    </select>
+                                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-primary">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                        <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Speciality -->
+                            <div class="relative group">
+                                <label
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-4">Speciality</label>
+                                <div class="relative">
+                                    <select name="department_id"
+                                        class="w-full pl-12 pr-6 py-3.5 bg-slate-50 border-none rounded-2xl text-xs font-bold text-slate-700 focus:ring-2 focus:ring-primary/20 appearance-none transition-all">
+                                        <option value="">Select Category</option>
+                                        @foreach($departments as $dept)
+                                            <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-primary">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                                        <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Doctor -->
+                            <div class="relative group">
+                                <label
+                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-4">Doctor
+                                    Name</label>
+                                <div class="relative">
+                                    <input type="text" name="search" placeholder="Search..."
+                                        class="w-full pl-12 pr-6 py-3.5 bg-slate-50 border-none rounded-2xl text-xs font-bold text-slate-700 focus:ring-2 focus:ring-primary/20 transition-all placeholder-slate-300">
+                                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-primary">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <!-- Suggestions Dropdown -->
-                        <div id="location-suggestions" class="absolute top-full left-0 right-0 mt-4 bg-white rounded-[1.5rem] shadow-2xl border border-slate-50 overflow-hidden hidden z-50 max-h-80 overflow-y-auto">
-                            <!-- Results will be injected here -->
+
+                        <button type="submit"
+                            class="w-full py-4 bg-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 flex items-center justify-center gap-3">
+                            Search Available Doctors
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Right Image -->
+                <div class="relative hidden lg:block">
+                    <div class="relative z-10 rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white">
+                        <img src="{{ asset('assets/images/hero-doctor.png') }}" alt="Best Doctor" class="w-full h-auto">
+
+                        <!-- Floating Stats -->
+                        <div
+                            class="absolute bottom-10 left-10 right-10 bg-white/80 backdrop-blur-md p-6 rounded-3xl border border-white/50 shadow-xl flex items-center gap-4 animate-bounce-slow">
+                            <div
+                                class="h-12 w-12 bg-primary/20 rounded-full flex items-center justify-center text-primary">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-black text-slate-900 leading-none">500+</h4>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Verified
+                                    Doctors</p>
+                            </div>
                         </div>
                     </div>
-                    <button type="submit" class="w-full md:w-auto px-10 py-4 bg-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
-                        Search
-                    </button>
-                </form>
-            </div>
 
-            <!-- Trusted Badges -->
-            <div class="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                <div class="flex items-center space-x-2">
-                    <div class="font-black text-slate-400 text-xl tracking-tighter">TRUST<span class="text-indigo-400">MED</span></div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <div class="font-black text-slate-400 text-xl tracking-tighter">HEALTH<span class="text-indigo-400">CORE</span></div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <div class="font-black text-slate-400 text-xl tracking-tighter">VITAL<span class="text-indigo-400">SCAN</span></div>
-                </div>
-                <div class="flex items-center space-x-2">
-                    <div class="font-black text-slate-400 text-xl tracking-tighter">OMNI<span class="text-indigo-400">DOC</span></div>
+                    <!-- Background Shapes -->
+                    <div class="absolute -top-10 -right-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10"></div>
+                    <div class="absolute -bottom-20 -left-20 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl -z-10">
+                    </div>
                 </div>
             </div>
         </div>
-
-        <!-- Abstract Shapes -->
-        <div class="absolute -top-24 -left-24 w-96 h-96 bg-indigo-100/50 rounded-full blur-3xl"></div>
-        <div class="absolute top-1/2 -right-24 w-64 h-64 bg-blue-100/30 rounded-full blur-3xl"></div>
     </section>
 
-    <!-- Departments Section -->
-    <section id="departments" class="py-20 bg-white relative">
+    <!-- Our Top Rated Doctors -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-4">Our Top Rated Doctors
+                </h2>
+                <p class="text-slate-500 font-medium text-sm">Meet the world-class doctors, best known for
+                    their clinical excellence.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                @foreach($featuredDoctors as $doctor)
+                    <div
+                        class="group bg-white rounded-[2.5rem] overflow-hidden border border-slate-100 hover:shadow-2xl transition-all duration-500 flex flex-col">
+                        <div class="relative aspect-[4/5] overflow-hidden bg-slate-50">
+                            @if($doctor->hasMedia('profile_image'))
+                                <img src="{{ $doctor->getFirstMediaUrl('profile_image') }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            @else
+                                <img src="{{ asset('assets/images/default-doctor.png') }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-80">
+                            @endif
+                            <div class="absolute top-4 left-4">
+                                <span
+                                    class="px-4 py-1.5 bg-primary/90 backdrop-blur-sm text-white text-[9px] font-black uppercase tracking-widest rounded-lg shadow-lg">Featured</span>
+                            </div>
+                            <div onclick="toggleWishlist(this, {{ $doctor->id }})"
+                                class="absolute top-4 right-4 h-10 w-10 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg cursor-pointer hover:bg-rose-50 transition-all text-rose-500 {{ in_array($doctor->id, $wishlistedIds) ? 'bg-rose-50' : '' }}">
+                                <svg class="w-5 h-5"
+                                    fill="{{ in_array($doctor->id, $wishlistedIds) ? 'currentColor' : 'none' }}"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                    </path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <p class="text-[10px] font-black text-primary uppercase tracking-widest mb-2">
+                                {{ $doctor->department->name }}
+                            </p>
+                            <h4 class="text-xl font-black text-slate-900 mb-2 leading-tight">
+                                <a href="{{ route('doctors.show', $doctor->id) }}"
+                                    class="hover:text-primary transition-colors">{{ $doctor->name }}</a>
+                            </h4>
+                            <p class="text-xs font-bold text-slate-500 line-clamp-2 mb-6">
+                                {{ $doctor->educations->pluck('degree')->implode(', ') }}
+                            </p>
+                            <a href="{{ route('doctors.show', $doctor->id) }}"
+                                class="mt-auto w-full py-3.5 bg-primary text-white rounded-2xl font-black text-[10px] uppercase tracking-widest text-center hover:bg-primary/90 transition-all shadow-lg shadow-primary/10">
+                                Book Appointment
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    <!-- Our Departments Section -->
+    <section class="py-24 bg-slate-50/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-end mb-16">
-                <div class="max-w-2xl">
-                    <h2 class="text-sm font-black text-primary uppercase tracking-[0.3em] mb-2">Top Specialties</h2>
-                    <h3 class="text-3xl md:text-4xl font-black text-heading tracking-tight leading-tight">
-                        Explore Doctors by <span class="text-primary">Department</span>
-                    </h3>
+                <div class="max-w-2xl text-center md:text-left">
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-4">Our Departments</h2>
+                    <p class="text-slate-500 font-medium text-sm">Choose from more than 20 medical specialties focused
+                        on your health.</p>
                 </div>
-                <a href="#" class="mt-6 md:mt-0 inline-flex items-center text-sm font-bold text-slate-400 hover:text-primary transition-colors group">
-                    View All Specializations
-                    <svg class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                <a href="{{ route('doctors.index') }}"
+                    class="mt-8 md:mt-0 px-8 py-3 border-2 border-primary text-primary rounded-xl font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
+                    View All Departments
                 </a>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 @foreach($departments as $dept)
-                    <a href="{{ route('doctors.index', ['department_id' => $dept->id]) }}" class="group p-6 bg-slate-50 hover:bg-primary rounded-2xl transition-all duration-500 border border-slate-100 hover:border-primary hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-primary/20">
-                        <div class="h-14 w-14 bg-white group-hover:bg-primary/80 rounded-2xl flex items-center justify-center mb-4 shadow-sm transition-colors">
-                            <svg class="w-6 h-6 text-primary group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                    <div
+                        class="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 hover:border-primary/30 transition-all group">
+                        <div
+                            class="h-16 w-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                            <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                                </path>
+                            </svg>
                         </div>
-                        <h4 class="text-lg font-black text-heading group-hover:text-white transition-colors tracking-tight">{{ $dept->name }}</h4>
-                        <p class="text-[13px] font-bold text-slate-400 group-hover:text-primary-light transition-colors mt-1">{{ $dept->doctors_count }} Doctors</p>
-                    </a>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    <!-- Featured Doctors Section -->
-    <section id="featured" class="py-20 bg-slate-50/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12">
-                <h2 class="text-sm font-black text-primary uppercase tracking-[0.3em] mb-2">Handpicked for you</h2>
-                <h3 class="text-3xl md:text-4xl font-black text-heading tracking-tight leading-tight">
-                    Discover Our <span class="text-primary">Top-Rated</span> Doctors
-                </h3>
-                <p class="text-slate-500 text-sm font-medium mt-4">
-                    Highly experienced professionals recognized for their excellence in patient care and medical expertise.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach($featuredDoctors as $doctor)
-                    <div class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 border border-slate-100 flex flex-col">
-                        <!-- Image Area -->
-                        <div class="relative aspect-[4/3.5] overflow-hidden bg-slate-50">
-                            @if($doctor->hasMedia('profile_image'))
-                                <img src="{{ $doctor->getFirstMediaUrl('profile_image') }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                            @else
-                                <div class="w-full h-full flex items-center justify-center text-slate-200">
-                                    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"></path></svg>
-                                </div>
-                            @endif
-
-                            <div onclick="toggleWishlist(this, {{ $doctor->id }})" class="absolute top-3 right-3 h-8 w-8 rounded-xl flex items-center justify-center shadow-lg cursor-pointer transition-all {{ in_array($doctor->id, $wishlistedIds) ? 'bg-rose-500 text-white' : 'bg-white/90 backdrop-blur-sm text-rose-500 hover:bg-rose-50' }}" title="Add to Wishlist">
-                                <svg class="w-4 h-4 wishlist-icon" fill="{{ in_array($doctor->id, $wishlistedIds) ? 'currentColor' : 'none' }}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
-                            </div>
-                            <div class="absolute bottom-3 left-3 px-3 py-1 bg-primary text-white text-[9px] font-black uppercase tracking-widest rounded-lg shadow-lg">
-                                {{ $doctor->department->name }}
-                            </div>
-                        </div>
-
-                        <!-- Content Area -->
-                        <div class="p-4 flex-1 flex flex-col">
-                            <h4 class="text-lg font-black text-slate-900 mb-0.5 tracking-tight leading-tight">
-                                <a href="{{ route('doctors.show', $doctor->id) }}" class="hover:text-primary transition-colors">
-                                    {{ $doctor->name }}
-                                </a>
-                            </h4>
-                            <p class="text-[10px] font-black text-rose-500 uppercase tracking-widest mb-2">
-                                {{ $doctor->department->name }}
-                            </p>
-                            
-                            <p class="text-[13px] font-bold text-slate-500 leading-snug line-clamp-2 mb-4">
-                                {{ $doctor->educations->pluck('degree')->implode(', ') }}
-                                @if($doctor->specialization)
-                                    - {{ $doctor->specialization }}
-                                @endif
-                            </p>
-
-                            <div class="mt-auto">
-                                <a href="{{ route('doctors.show', $doctor->id) }}" class="block w-full py-2.5 bg-slate-100 text-primary rounded-lg font-black text-[10px] uppercase tracking-widest text-center hover:bg-primary hover:text-white transition-all">
-                                    View Profile
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-
-            <div class="mt-16 text-center">
-                <a href="{{ route('doctors.index') }}" class="inline-flex items-center px-10 py-4 border-2 border-slate-200 text-slate-600 rounded-2xl font-black text-sm uppercase tracking-widest hover:border-primary hover:text-primary transition-all">
-                    Show All Doctors
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="py-24 bg-primary relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
-                <div class="space-y-2">
-                    <div class="text-4xl md:text-6xl font-black text-white tracking-tighter">500+</div>
-                    <div class="text-white/60 text-xs font-black uppercase tracking-widest">Specialist Doctors</div>
-                </div>
-                <div class="space-y-2">
-                    <div class="text-4xl md:text-6xl font-black text-white tracking-tighter">25+</div>
-                    <div class="text-white/60 text-xs font-black uppercase tracking-widest">Medical Branches</div>
-                </div>
-                <div class="space-y-2">
-                    <div class="text-4xl md:text-6xl font-black text-white tracking-tighter">10k+</div>
-                    <div class="text-white/60 text-xs font-black uppercase tracking-widest">Satisfied Users</div>
-                </div>
-                <div class="space-y-2">
-                    <div class="text-4xl md:text-6xl font-black text-white tracking-tighter">4.9</div>
-                    <div class="text-white/60 text-xs font-black uppercase tracking-widest">Average Rating</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Decoration -->
-        <div class="absolute top-0 right-0 w-1/3 h-full bg-indigo-500 skew-x-[-15deg] translate-x-1/2"></div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="py-32 bg-white">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-slate-900 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
-                <div class="relative z-10">
-                    <h3 class="text-4xl md:text-5xl font-black text-white mb-8 tracking-tight">Are You a <span class="text-primary/80">Professional</span> Doctor?</h3>
-                    <p class="text-slate-400 text-lg mb-12 max-w-2xl mx-auto font-medium">
-                        Join our network of healthcare providers and reach thousands of patients looking for your expertise.
-                    </p>
-                    <div class="flex flex-col md:flex-row justify-center gap-4">
-                        <a href="{{ route('register') }}" class="px-12 py-5 bg-primary text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-xl shadow-primary/20">
-                            Apply as Doctor
-                        </a>
-                        <a href="#" class="px-12 py-5 bg-white text-heading rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-50 transition-all">
+                        <h3 class="text-xl font-black text-slate-900 mb-4">{{ $dept->name }}</h3>
+                        <p class="text-slate-500 text-[13px] leading-relaxed mb-6">Expert care in {{ $dept->name }} with
+                            specialized doctors dedicated to your wellness and recovery.</p>
+                        <a href="{{ route('doctors.index', ['department_id' => $dept->id]) }}"
+                            class="inline-flex items-center text-xs font-black text-primary uppercase tracking-widest hover:underline gap-2 group/link">
                             Learn More
+                            <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
                         </a>
                     </div>
-                </div>
-                <!-- Abstract BG -->
-                <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"></div>
-                <div class="absolute -top-24 -left-24 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl"></div>
+                @endforeach
             </div>
         </div>
     </section>
+    <!-- Our Services Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-4">Our Services</h2>
+                <p class="text-slate-500 font-medium text-sm">We offer a wide range of healthcare services to make your
+                    life easier and healthier.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Doctors -->
+                <div
+                    class="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 hover:border-primary/30 transition-all group">
+                    <div
+                        class="h-16 w-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-black text-slate-900 mb-4">Doctors</h3>
+                    <p class="text-slate-500 text-[13px] leading-relaxed mb-6">Find the right specialist for your health
+                        needs and book an appointment instantly.</p>
+                    <!-- <a href="{{ route('doctors.index') }}"
+                        class="inline-flex items-center text-xs font-black text-primary uppercase tracking-widest hover:underline gap-2 group/link">
+                        Learn More
+                        <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a> -->
+                </div>
+
+                <!-- Surgery Support -->
+                <div
+                    class="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 hover:border-primary/30 transition-all group">
+                    <div
+                        class="h-16 w-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-black text-slate-900 mb-4">Surgery Support</h3>
+                    <p class="text-slate-500 text-[13px] leading-relaxed mb-6">Expert guidance and support through your
+                        surgical journey with top specialists.</p>
+                    <!-- <a href="#"
+                        class="inline-flex items-center text-xs font-black text-primary uppercase tracking-widest hover:underline gap-2 group/link">
+                        Learn More
+                        <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a> -->
+                </div>
+
+                <!-- Hospital & Diagnostic -->
+                <div
+                    class="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 hover:border-primary/30 transition-all group">
+                    <div
+                        class="h-16 w-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a2 2 0 00-1.96 1.414l-.727 2.903a2 2 0 01-1.542 1.488 2.03 2.03 0 01-1.554-.158L8.13 18.13l-1.936-1.936 2.103-2.103a2.03 2.03 0 011.554-.158 2 2 0 011.488 1.542l.727 2.903a2 2 0 01-1.542 1.488 2.03 2.03 0 01-.158 1.554l-2.103 2.103-1.936-1.936-1.936-1.936 2.103-2.103a2.03 2.03 0 011.554-.158 2 2 0 011.488 1.542l.727 2.903a2 2 0 001.414 1.96l2.903.727a2 2 0 011.488 1.542 2.03 2.03 0 01-.158 1.554l-2.103 2.103">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-black text-slate-900 mb-4">Diagnostic</h3>
+                    <p class="text-slate-500 text-[13px] leading-relaxed mb-6">Build access to leading diagnostic
+                        centers and labs in local hospital facilities.</p>
+                    <!-- <a href="#"
+                        class="inline-flex items-center text-xs font-black text-primary uppercase tracking-widest hover:underline gap-2 group/link">
+                        Learn More
+                        <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a> -->
+                </div>
+
+                <!-- Home Health Service -->
+                <div
+                    class="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 hover:border-primary/30 transition-all group">
+                    <div
+                        class="h-16 w-16 bg-white rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-black text-slate-900 mb-4">Home Health</h3>
+                    <p class="text-slate-500 text-[13px] leading-relaxed mb-6">Get professional medical care in the
+                        comfort of your home with our mobile team.</p>
+                    <!-- <a href="#"
+                        class="inline-flex items-center text-xs font-black text-primary uppercase tracking-widest hover:underline gap-2 group/link">
+                        Learn More
+                        <svg class="w-4 h-4 group-hover/link:translate-x-1 transition-transform" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
 
     @push('scripts')
-    <script>
-        function toggleWishlist(el, doctorId) {
-            @guest
-                window.location.href = "{{ route('login') }}";
-                return;
-            @endguest
+        <script>
+            // Division to District AJAX
+            document.getElementById('division-select').addEventListener('change', function () {
+                const divisionId = this.value;
+                const districtSelect = document.getElementById('district-select');
 
-            fetch("{{ route('wishlist.toggle') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
-                },
-                body: JSON.stringify({ doctor_id: doctorId })
-            })
-            .then(res => res.json())
-            .then(data => {
-                const icon = el.querySelector('.wishlist-icon');
-                if (data.status === 'added') {
-                    el.classList.remove('bg-white', 'text-rose-500', 'hover:bg-rose-50');
-                    el.classList.add('bg-rose-500', 'text-white');
-                    icon.setAttribute('fill', 'currentColor');
-                } else {
-                    el.classList.remove('bg-rose-500', 'text-white');
-                    el.classList.add('bg-white', 'text-rose-500', 'hover:bg-rose-50');
-                    icon.setAttribute('fill', 'none');
+                districtSelect.innerHTML = '<option value="">Loading...</option>';
+
+                if (!divisionId) {
+                    districtSelect.innerHTML = '<option value="">Select District</option>';
+                    return;
                 }
-            })
-            .catch(err => {
-                console.error("Wishlist toggle failed:", err);
+
+                fetch(`/api/districts?division_id=${divisionId}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        districtSelect.innerHTML = '<option value="">Select District</option>';
+                        data.forEach(district => {
+                            const option = document.createElement('option');
+                            option.value = district.id;
+                            option.textContent = district.name;
+                            districtSelect.appendChild(option);
+                        });
+                    })
+                    .catch(err => {
+                        districtSelect.innerHTML = '<option value="">Select District</option>';
+                        console.error("Failed to fetch districts:", err);
+                    });
             });
+
+            function toggleWishlist(el, doctorId) {
+                @guest
+                    window.location.href = "{{ route('login') }}";
+                    return;
+                @endguest
+
+                fetch("{{ route('wishlist.toggle') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: JSON.stringify({ doctor_id: doctorId })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        const icon = el.querySelector('svg');
+                        const countEl = document.getElementById('wishlist-count');
+
+                        if (data.status === 'added') {
+                            el.classList.add('bg-rose-50');
+                            icon.setAttribute('fill', 'currentColor');
+                        } else {
+                            el.classList.remove('bg-rose-50');
+                            icon.setAttribute('fill', 'none');
+                        }
+
+                        if (countEl && data.count !== undefined) {
+                            countEl.textContent = data.count;
+                        }
+                    });
+            }
+        </script>
+    @endpush
+
+    <style>
+        .animate-bounce-slow {
+            animation: bounce 3s infinite;
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const locationInput = document.getElementById('location-search');
-            const suggestionsContainer = document.getElementById('location-suggestions');
-            const hiddenDivision = document.getElementById('hidden-division-id');
-            const hiddenDistrict = document.getElementById('hidden-district-id');
-            const hiddenArea = document.getElementById('hidden-area-id');
+        @keyframes bounce {
 
-            let debounceTimer;
-
-            if (locationInput) {
-                locationInput.addEventListener('input', function() {
-                    const query = this.value;
-                    
-                    // Reset hiddens when user types
-                    hiddenDivision.value = '';
-                    hiddenDistrict.value = '';
-                    hiddenArea.value = '';
-
-                    clearTimeout(debounceTimer);
-                    
-                    if (query.length < 2) {
-                        suggestionsContainer.classList.add('hidden');
-                        return;
-                    }
-
-                    debounceTimer = setTimeout(() => {
-                        fetch(`/api/locations/search?query=${encodeURIComponent(query)}`)
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data.length > 0) {
-                                    suggestionsContainer.innerHTML = '';
-                                    data.forEach(item => {
-                                        const div = document.createElement('div');
-                                        div.className = 'px-6 py-4 hover:bg-indigo-50 cursor-pointer transition-colors border-b border-slate-50 last:border-none flex items-center gap-3 group';
-                                        
-                                        let icon = '<svg class="w-4 h-4 text-slate-400 group-hover:text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>';
-                                        
-                                        div.innerHTML = `
-                                            ${icon}
-                                            <div>
-                                                <div class="text-sm font-bold text-slate-700 group-hover:text-indigo-600">${item.display}</div>
-                                            </div>
-                                        `;
-                                        
-                                        div.addEventListener('click', () => {
-                                            locationInput.value = item.name;
-                                            
-                                            // Reset hiddens
-                                            hiddenDivision.value = '';
-                                            hiddenDistrict.value = '';
-                                            hiddenArea.value = '';
-                                            
-                                            // Set specific hidden
-                                            if (item.type === 'division') hiddenDivision.value = item.id;
-                                            if (item.type === 'district') hiddenDistrict.value = item.id;
-                                            if (item.type === 'area') hiddenArea.value = item.id;
-                                            
-                                            suggestionsContainer.classList.add('hidden');
-                                        });
-                                        suggestionsContainer.appendChild(div);
-                                    });
-                                    suggestionsContainer.classList.remove('hidden');
-                                } else {
-                                    suggestionsContainer.classList.add('hidden');
-                                }
-                            });
-                    }, 300);
-                });
-
-                // Close suggestions when clicking outside
-                document.addEventListener('click', function(e) {
-                    if (!locationInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
-                        suggestionsContainer.classList.add('hidden');
-                    }
-                });
+            0%,
+            100% {
+                transform: translateY(-5%);
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
             }
-        });
-    </script>
-    @endpush
+
+            50% {
+                transform: translateY(0);
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+        }
+    </style>
 </x-frontend-layout>

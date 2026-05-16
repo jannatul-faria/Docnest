@@ -49,7 +49,11 @@ class DoctorService
 
             // 2. Handle Profile Image
             if (isset($data['profile_image'])) {
-                $doctor->addMedia($data['profile_image'])->toMediaCollection('profile_image');
+                $extension = $data['profile_image']->getClientOriginalExtension();
+                $fileName = $doctor->id . '_image.' . $extension;
+                $doctor->addMedia($data['profile_image'])
+                       ->usingFileName($fileName)
+                       ->toMediaCollection('profile_image');
             }
 
             // 3. Handle Educations
@@ -94,7 +98,12 @@ class DoctorService
 
             // 2. Handle Profile Image
             if (isset($data['profile_image'])) {
-                $doctor->addMedia($data['profile_image'])->toMediaCollection('profile_image');
+                $doctor->clearMediaCollection('profile_image');
+                $extension = $data['profile_image']->getClientOriginalExtension();
+                $fileName = $doctor->id . '_image.' . $extension;
+                $doctor->addMedia($data['profile_image'])
+                       ->usingFileName($fileName)
+                       ->toMediaCollection('profile_image');
             }
 
             // 3. Handle Educations

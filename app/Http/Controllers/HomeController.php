@@ -16,7 +16,7 @@ class HomeController extends Controller
         $featuredDoctors = Doctor::with(['user', 'department', 'chambers.area.district'])
             ->where('is_featured', true)
             ->where('status', true)
-            ->take(6)
+            ->take(8)
             ->get();
 
         $departments = Department::withCount('doctors')
@@ -34,5 +34,22 @@ class HomeController extends Controller
         $divisions = Division::orderBy('name')->get();
 
         return view('frontend.index', compact('featuredDoctors', 'departments', 'wishlistedIds', 'divisions'));
+    }
+
+    public function departments()
+    {
+        $departments = Department::withCount(['doctors' => function ($query) {
+            $query->where('status', true);
+        }])
+            ->where('status', true)
+            ->orderBy('name')
+            ->get();
+
+        return view('frontend.departments.index', compact('departments'));
+    }
+
+    public function about()
+    {
+        return view('frontend.about');
     }
 }

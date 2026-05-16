@@ -15,13 +15,8 @@
                                     <img src="{{ $doctor->getFirstMediaUrl('profile_image') }}"
                                         class="w-full h-full object-cover">
                                 @else
-                                    <div class="w-full h-full bg-slate-100 flex items-center justify-center">
-                                        <svg class="w-24 h-24 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z">
-                                            </path>
-                                        </svg>
-                                    </div>
+                                    <img src="{{ asset('assets/images/default-doctor.png') }}"
+                                        class="w-full h-full object-cover opacity-80">
                                 @endif
                             </div>
                         </div>
@@ -75,8 +70,7 @@
 
                             <div class="flex flex-col items-end gap-3">
                                 <div class="text-right">
-                                    <p class="text-[#94a3b8] italic text-xs mb-1">Or make a call</p>
-                                    <a href="tel:{{ $doctor->chambers->first()->phone ?? '' }}"
+                                    <a href="tel:{{ get_setting('contact_phone') ?? '' }}"
                                         class="flex items-center gap-2 justify-end text-[#2b66f2] hover:underline">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -84,10 +78,10 @@
                                             </path>
                                         </svg>
                                         <span
-                                            class="text-2xl font-black tracking-tight">+{{ $doctor->chambers->first()->phone ?? '8801700-000000' }}</span>
+                                            class="text-2xl font-black tracking-tight">+{{ get_setting('contact_phone') ?? '8801700-000000' }}</span>
                                     </a>
                                     <div class="flex items-center gap-3 justify-end mt-3">
-                                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $doctor->chambers->first()->phone ?? '') }}"
+                                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', get_setting('contact_phone') ?? '') }}"
                                             target="_blank"
                                             class="flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white rounded-full text-xs font-bold hover:bg-[#128C7E] transition-all">
                                             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -96,7 +90,7 @@
                                             </svg>
                                             Chat on WhatsApp
                                         </a>
-                                        <a href="tel:{{ $doctor->chambers->first()->phone ?? '' }}"
+                                        <a href="tel:{{ get_setting('contact_phone') ?? '' }}"
                                             class="flex items-center gap-2 px-4 py-2 bg-slate-100 text-slate-700 rounded-full text-xs font-bold hover:bg-slate-200 transition-all">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -130,12 +124,12 @@
 
                 <!-- Chamber Schedule (Left) -->
                 <div class="lg:col-span-4 bg-white rounded-xl shadow-sm overflow-hidden border border-slate-100">
-                    <div class="bg-[#008a44] text-white p-3 flex items-center justify-center gap-2">
+                    <div class="bg-primary text-white p-3 flex items-center justify-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <h2 class="font-bold text-sm tracking-wider uppercase">Chamber Schedule</h2>
+                        <p class="font-bold text-sm tracking-wider uppercase text-white">Chamber Schedule</p>
                     </div>
                     <div class="divide-y divide-slate-100">
                         @php
@@ -176,12 +170,13 @@
 
                     <!-- Diseases Treated -->
                     <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-slate-100">
-                        <div class="bg-[#008a44] text-white p-3 flex items-center justify-center gap-2">
+                        <div class="bg-primary text-white p-3 flex items-center justify-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <h2 class="font-bold text-sm tracking-wider uppercase">The Diseases That Are Treated</h2>
+                            <p class="font-bold text-sm tracking-wider uppercase text-white">The Diseases That Are
+                                Treated</p>
                         </div>
                         <div class="p-5">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
@@ -214,7 +209,8 @@
                                                     d="M5 13l4 4L19 7"></path>
                                             </svg>
                                         </div>
-                                        <span class="text-[#334155] text-sm font-semibold leading-snug">{{ trim($disease) }}</span>
+                                        <span
+                                            class="text-[#334155] text-sm font-semibold leading-snug">{{ trim($disease) }}</span>
                                     </div>
                                 @endforeach
                             </div>
@@ -223,7 +219,7 @@
 
                     <!-- Chamber Address -->
                     <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-slate-100">
-                        <div class="bg-[#005c3b] text-white p-3 flex items-center justify-center gap-2">
+                        <div class="bg-primary text-white p-3 flex items-center justify-center gap-2">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
@@ -231,7 +227,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             </svg>
-                            <h2 class="font-bold text-sm tracking-wider uppercase">Chamber Address</h2>
+                            <p class="font-bold text-sm tracking-wider uppercase text-white">Chamber Address</p>
                         </div>
                         <div class="p-5">
                             @php $firstChamber = $doctor->chambers->first(); @endphp
@@ -255,16 +251,7 @@
                                             , {{ $firstChamber->area->name }}, {{ $firstChamber->area->district->name }}
                                         @endif
                                     </p>
-                                    <a href="https://www.google.com/maps/search/{{ urlencode(($firstChamber->name ?? '') . ' ' . ($firstChamber->address ?? '')) }}"
-                                        target="_blank"
-                                        class="inline-flex items-center gap-1 text-[#008a44] font-bold hover:underline decoration-2 underline-offset-4">
-                                        View on Google Maps
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
-                                            </path>
-                                        </svg>
-                                    </a>
+
                                 </div>
                             </div>
                         </div>

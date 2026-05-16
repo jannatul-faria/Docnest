@@ -23,64 +23,51 @@
             </div>
 
 
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="{{ route('home')}}"
-                    class="text-sm font-bold text-slate-500 hover:text-primary transition-colors">
-                    Home
-                </a>
-                <div class="relative group">
-                    <button
-                        class="flex items-center text-sm font-bold text-slate-500 hover:text-primary transition-colors py-3">
-                        Specialties
-                        <svg class="w-4 h-4 ml-1 group-hover:rotate-180 transition-transform" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-                            </path>
-                        </svg>
-                    </button>
-                    <div
-                        class="absolute top-full left-0 w-64 bg-white border border-slate-100 rounded-2xl shadow-xl py-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all transform translate-y-2 group-hover:translate-y-0 z-50">
-                        @foreach(\App\Models\Department::where('status', 1)->take(8)->get() as $dept)
-                            <a href="{{ route('home') }}?department={{ $dept->slug }}"
-                                class="block px-6 py-2.5 text-sm font-medium text-slate-600 hover:text-primary hover:bg-slate-50 transition-all">
-                                {{ $dept->name }}
-                            </a>
-                        @endforeach
-                        <div class="border-t border-slate-50 mt-2 pt-2">
-                            <a href="{{ route('home') }}"
-                                class="block px-6 py-2 text-xs font-bold text-primary uppercase tracking-widest hover:underline">View
-                                All Specialties</a>
-                        </div>
-                    </div>
-                </div>
-                <a href="{{ route('doctors.index')}}"
-                    class="text-sm font-bold text-slate-500 hover:text-primary transition-colors">
-                    Doctors</a>
-
+            <div class="hidden md:flex flex-grow justify-center items-center space-x-8">
+                <a href="{{ route('home') }}"
+                    class="text-sm font-bold {{ request()->routeIs('home') ? 'text-primary' : 'text-slate-500' }} hover:text-primary transition-colors">Home</a>
+                <a href="{{ route('doctors.index') }}"
+                    class="text-sm font-bold {{ request()->routeIs('doctors.index') ? 'text-primary' : 'text-slate-500' }} hover:text-primary transition-colors">Doctors</a>
+                <a href="{{ route('departments.index') }}"
+                    class="text-sm font-bold {{ request()->routeIs('departments.index') ? 'text-primary' : 'text-slate-500' }} hover:text-primary transition-colors">Departments</a>
+                <a href="{{ route('about') }}"
+                    class="text-sm font-bold {{ request()->routeIs('about') ? 'text-primary' : 'text-slate-500' }} hover:text-primary transition-colors">About Us</a>
             </div>
 
             <div class="flex items-center space-x-4">
+                <a href="tel:{{ get_setting('contact_phone') }}"
+                    class="hidden lg:flex items-center space-x-2 px-6 py-2.5 bg-primary text-white rounded-full text-sm font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+                    <div class="h-6 w-6 bg-white/20 rounded-full flex items-center justify-center">
+                        <svg class="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M6.176 1.106c2.196-.516 4.463.805 4.978 3.001l.611 2.608c.241 1.026-.145 2.101-.986 2.684l-1.742 1.206c1.173 2.456 3.161 4.444 5.617 5.617l1.206-1.742c.583-.841 1.658-1.227 2.684-.986l2.608.611c2.196.516 3.517 2.782 3.001 4.978l-1.015 4.318c-.407 1.733-1.954 2.946-3.737 2.946-12.015 0-21.751-9.736-21.751-21.751 0-1.783 1.213-3.33 2.946-3.737l4.318-1.015z" />
+                        </svg>
+                    </div>
+                    <span>Emergency: {{ get_setting('contact_phone') }}</span>
+                </a>
+
                 @auth
                     <div class="flex items-center space-x-4">
                         <a href="{{ route('wishlist.index') }}"
-                            class="relative p-2 text-slate-500 hover:text-rose-500 transition-colors">
+                            class="relative p-2 text-slate-500 hover:text-rose-500 transition-colors group">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
                                 </path>
                             </svg>
-                            <span
+                            <span id="wishlist-count"
                                 class="absolute top-0 right-0 h-4 w-4 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center border-2 border-white">{{ Auth::user()->wishlists()->count() }}</span>
                         </a>
-                        <a href="{{ route('dashboard') }}"
-                            class="px-5 py-2.5 rounded-xl text-sm font-bold bg-primary/10 text-primary hover:bg-primary/20 transition-all">Dashboard</a>
+                        <a href="{{ route('dashboard') }}" class="p-2 text-slate-500 hover:text-primary transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </a>
                     </div>
                 @else
                     <a href="{{ route('login') }}"
-                        class="text-sm font-bold text-slate-600 hover:text-primary transition-colors px-4">Sign In</a>
-                    <a href="{{ route('register') }}"
-                        class="px-6 py-2.5 bg-primary text-white rounded-xl text-sm font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">Get
-                        Started</a>
+                        class="text-sm font-bold text-slate-600 hover:text-primary transition-colors px-2">Sign In</a>
                 @endauth
             </div>
         </div>

@@ -16,7 +16,10 @@ class WishlistRepository
 
         if ($wishlist) {
             $wishlist->delete();
-            return ['status' => 'removed'];
+            return [
+                'status' => 'removed',
+                'count' => Auth::user()->wishlists()->count()
+            ];
         }
 
         Wishlist::create([
@@ -24,7 +27,10 @@ class WishlistRepository
             'doctor_id' => $doctorId
         ]);
 
-        return ['status' => 'added'];
+        return [
+            'status' => 'added',
+            'count' => Auth::user()->wishlists()->count()
+        ];
     }
 
     public function getUserWishlist($userId)
