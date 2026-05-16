@@ -22,7 +22,12 @@
                 </a>
             </div>
 
+
             <div class="hidden md:flex items-center space-x-8">
+                <a href="{{ route('home')}}"
+                    class="text-sm font-bold text-slate-500 hover:text-primary transition-colors">
+                    Home
+                </a>
                 <div class="relative group">
                     <button
                         class="flex items-center text-sm font-bold text-slate-500 hover:text-primary transition-colors py-3">
@@ -48,10 +53,10 @@
                         </div>
                     </div>
                 </div>
-                <a href="#featured" class="text-sm font-bold text-slate-500 hover:text-primary transition-colors">Top
+                <a href="{{ route('doctors.index')}}"
+                    class="text-sm font-bold text-slate-500 hover:text-primary transition-colors">
                     Doctors</a>
-                <a href="#" class="text-sm font-bold text-slate-500 hover:text-primary transition-colors">How it
-                    Works</a>
+
             </div>
 
             <div class="flex items-center space-x-4">

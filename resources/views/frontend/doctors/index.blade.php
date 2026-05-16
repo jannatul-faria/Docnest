@@ -10,7 +10,7 @@
 
             <!-- Top Search Bar -->
             <div class="bg-slate-100/50 p-3 rounded-2xl mb-8 shadow-sm border border-slate-100">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
                     <div class="relative">
                         <select id="division-select" onchange="updateDistricts(); applyFilters()"
                             class="w-full bg-white border-none rounded-xl py-2.5 px-4 text-sm font-bold text-slate-600 focus:ring-2 focus:ring-primary/20 appearance-none shadow-sm cursor-pointer">
@@ -31,6 +31,19 @@
                         <select id="district-select" onchange="updateAreas(); applyFilters()"
                             class="w-full bg-white border-none rounded-xl py-2.5 px-4 text-sm font-bold text-slate-600 focus:ring-2 focus:ring-primary/20 appearance-none shadow-sm cursor-pointer">
                             <option value="">Select District</option>
+                        </select>
+                        <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <select id="area-select" onchange="applyFilters()"
+                            class="w-full bg-white border-none rounded-xl py-2.5 px-4 text-sm font-bold text-slate-600 focus:ring-2 focus:ring-primary/20 appearance-none shadow-sm cursor-pointer">
+                            <option value="">Select Area</option>
                         </select>
                         <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
                             <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

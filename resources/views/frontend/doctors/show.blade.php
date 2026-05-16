@@ -1,5 +1,5 @@
 <x-frontend-layout>
-    <x-slot:title>{{ $doctor->user->name }} - {{ $doctor->department->name }} | DocNest</x-slot:title>
+    <x-slot:title>{{ $doctor->name }} - {{ $doctor->department->name }} | DocNest</x-slot:title>
 
     <div class="py-6 bg-[#f0f5f9] min-h-screen font-outfit">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,7 +29,7 @@
                         <!-- Doctor Info -->
                         <div class="flex-grow flex flex-col justify-between">
                             <div>
-                                <h1 class="text-2xl font-bold text-[#008a44] mb-1">{{ $doctor->user->name }}</h1>
+                                <h1 class="text-2xl font-bold text-[#008a44] mb-1">{{ $doctor->name }}</h1>
 
                                 <div class="flex items-center gap-2 mb-3">
                                     <svg class="w-4 h-4 text-[#008a44]" fill="none" stroke="currentColor"

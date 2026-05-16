@@ -51,16 +51,16 @@
                                     <div class="flex items-center">
                                         <div class="h-10 w-10 flex-shrink-0">
                                             @if($doctor->hasMedia('profile_image'))
-                                                <img class="h-10 w-10 rounded-lg object-cover border border-slate-100 shadow-sm" src="{{ $doctor->getFirstMediaUrl('profile_image') }}" alt="{{ $doctor->user->name }}">
+                                                <img class="h-10 w-10 rounded-lg object-cover border border-slate-100 shadow-sm" src="{{ $doctor->getFirstMediaUrl('profile_image') }}" alt="{{ $doctor->name }}">
                                             @else
                                                 <div class="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold border border-primary/20 text-sm">
-                                                    {{ substr($doctor->user->name, 0, 1) }}
+                                                    {{ substr($doctor->name, 0, 1) }}
                                                 </div>
                                             @endif
                                         </div>
                                         <div class="ml-3">
-                                            <div class="font-bold text-slate-900 leading-tight">{{ $doctor->user->name }}</div>
-                                            <div class="text-[11px] font-medium text-slate-400 mt-0.5">{{ $doctor->user->email }}</div>
+                                            <div class="font-bold text-slate-900 leading-tight">{{ $doctor->name }}</div>
+                                            <div class="text-[11px] font-medium text-slate-400 mt-0.5">{{ $doctor->email }}</div>
                                         </div>
                                     </div>
                                 </td>

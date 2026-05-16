@@ -29,18 +29,11 @@ class DoctorService
     public function createDoctor(array $data)
     {
         return DB::transaction(function () use ($data) {
-            // 1. Create User
-            $user = User::create([
+            // 1. Create Doctor Profile
+            $doctorData = [
+                'user_id' => null, // Making it optional for future
                 'name' => $data['name'],
                 'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-            ]);
-
-            $user->assignRole(UserRoleEnum::DOCTOR->value);
-
-            // 2. Create Doctor Profile
-            $doctorData = [
-                'user_id' => $user->id,
                 'department_id' => $data['department_id'],
                 'specialization' => $data['specialization'] ?? 'N/A',
                 'experience_years' => $data['experience_years'] ?? 0,
@@ -54,12 +47,12 @@ class DoctorService
 
             $doctor = $this->repository->create($doctorData);
 
-            // 3. Handle Profile Image
+            // 2. Handle Profile Image
             if (isset($data['profile_image'])) {
                 $doctor->addMedia($data['profile_image'])->toMediaCollection('profile_image');
             }
 
-            // 4. Handle Educations
+            // 3. Handle Educations
             if (isset($data['educations']) && is_array($data['educations'])) {
                 foreach ($data['educations'] as $edu) {
                     if (!empty($edu['degree']) && !empty($edu['institution']) && !empty($edu['passing_year'])) {
@@ -68,7 +61,7 @@ class DoctorService
                 }
             }
 
-            // 5. Handle Experiences
+            // 4. Handle Experiences
             if (isset($data['experiences']) && is_array($data['experiences'])) {
                 foreach ($data['experiences'] as $exp) {
                     if (!empty($exp['designation']) && !empty($exp['institution']) && !empty($exp['start_date'])) {
@@ -84,28 +77,27 @@ class DoctorService
     public function updateDoctor(Doctor $doctor, array $data)
     {
         return DB::transaction(function () use ($doctor, $data) {
-            // 1. Update User
-            $doctor->user->update([
-                'name' => $data['name'],
-                'email' => $data['email'],
-            ]);
-
-            if (!empty($data['password'])) {
-                $doctor->user->update(['password' => Hash::make($data['password'])]);
-            }
-
-            // 2. Update Doctor Profile
+            // 1. Update Doctor Profile
             if (empty($data['specialization'])) {
                 $data['specialization'] = 'N/A';
             }
+            
+            // If the doctor has a user attached, update the user as well for backward compatibility
+            if ($doctor->user) {
+                $doctor->user->update([
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                ]);
+            }
+
             $this->repository->update($doctor, $data);
 
-            // 3. Handle Profile Image
+            // 2. Handle Profile Image
             if (isset($data['profile_image'])) {
                 $doctor->addMedia($data['profile_image'])->toMediaCollection('profile_image');
             }
 
-            // 4. Handle Educations
+            // 3. Handle Educations
             if (isset($data['educations']) && is_array($data['educations'])) {
                 $doctor->educations()->delete();
                 foreach ($data['educations'] as $edu) {
@@ -115,7 +107,7 @@ class DoctorService
                 }
             }
 
-            // 5. Handle Experiences
+            // 4. Handle Experiences
             if (isset($data['experiences']) && is_array($data['experiences'])) {
                 $doctor->experiences()->delete();
                 foreach ($data['experiences'] as $exp) {
@@ -134,7 +126,9 @@ class DoctorService
         return DB::transaction(function () use ($doctor) {
             $user = $doctor->user;
             $doctor->delete();
-            $user->delete();
+            if ($user) {
+                $user->delete();
+            }
             return true;
         });
     }

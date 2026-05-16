@@ -39,14 +39,14 @@
                             @else
                                 <div
                                     class="h-full w-full bg-blue-50 flex items-center justify-center text-blue-600 text-4xl font-black">
-                                    {{ substr($doctor->user->name, 0, 1) }}
+                                    {{ substr($doctor->name, 0, 1) }}
                                 </div>
                             @endif
                         </div>
                     </div>
                     <div class="flex-1 space-y-3">
                         <div class="flex flex-wrap items-center gap-3">
-                            <h1 class="text-3xl font-black text-slate-900 tracking-tight">{{ $doctor->user->name }}</h1>
+                            <h1 class="text-3xl font-black text-slate-900 tracking-tight">{{ $doctor->name }}</h1>
                             <div class="flex gap-2">
                                 @if($doctor->status)
                                     <span
@@ -107,7 +107,7 @@
                         <div class="pt-4 border-t border-slate-200">
                             <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Account
                                 Email</p>
-                            <p class="text-sm font-bold text-slate-600 break-all">{{ $doctor->user->email }}</p>
+                            <p class="text-sm font-bold text-slate-600 break-all">{{ $doctor->email }}</p>
                         </div>
                     </div>
                 </div>

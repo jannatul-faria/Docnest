@@ -21,8 +21,11 @@ class DoctorRepository
 
         // Search by Name
         if (!empty($filters['search'])) {
-            $query->whereHas('user', function ($q) use ($filters) {
-                $q->where('name', 'like', '%' . $filters['search'] . '%');
+            $query->where(function ($q) use ($filters) {
+                $q->where('name', 'like', '%' . $filters['search'] . '%')
+                  ->orWhereHas('user', function ($uq) use ($filters) {
+                      $uq->where('name', 'like', '%' . $filters['search'] . '%');
+                  });
             });
         }
 

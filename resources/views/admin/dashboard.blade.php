@@ -73,7 +73,7 @@
                                 @endif
                             </div>
                             <div class="flex-1 min-w-0">
-                                <div class="font-black text-slate-900 text-sm truncate">{{ $doctor->user->name }}</div>
+                                <div class="font-black text-slate-900 text-sm truncate">{{ $doctor->name }}</div>
                                 <div class="text-xs font-bold text-slate-400 truncate">{{ $doctor->department->name }}</div>
                             </div>
                             <div class="text-[10px] font-black text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full ml-2">Active</div>

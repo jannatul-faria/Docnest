@@ -35,7 +35,7 @@ class DepartmentController extends Controller
 
         $this->service->createDepartment($validated);
 
-        return redirect()->route('departments.index')
+        return redirect()->route('admin.departments.index')
             ->with('success', 'Department created successfully.');
     }
 

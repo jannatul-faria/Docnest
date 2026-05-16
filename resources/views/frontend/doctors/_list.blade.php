@@ -21,7 +21,7 @@
             <div class="p-4 flex-1 flex flex-col">
                 <h4 class="text-lg font-black text-slate-900 mb-0.5 tracking-tight leading-tight">
                     <a href="{{ route('doctors.show', $doctor->id) }}" class="hover:text-primary transition-colors">
-                        {{ $doctor->user->name }}
+                        {{ $doctor->name }}
                     </a>
                 </h4>
                 <p class="text-[10px] font-black text-rose-500 uppercase tracking-widest mb-2">

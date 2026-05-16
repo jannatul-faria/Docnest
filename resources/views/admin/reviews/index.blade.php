@@ -48,7 +48,7 @@
                                     <div class="text-[11px] font-medium text-slate-400 mt-0.5">{{ $review->user->email }}</div>
                                 </td>
                                 <td class="px-4 py-4">
-                                    <div class="font-bold text-primary leading-tight">{{ $review->doctor->user->name }}</div>
+                                    <div class="font-bold text-primary leading-tight">{{ $review->doctor->name }}</div>
                                     <div class="text-[11px] font-medium text-slate-400 mt-0.5">{{ $review->doctor->department->name }}</div>
                                 </td>
                                 <td class="px-4 py-4">

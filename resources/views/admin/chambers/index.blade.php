@@ -52,7 +52,7 @@
                                     <div class="text-[11px] font-medium text-slate-400 mt-0.5">{{ $chamber->address }}</div>
                                 </td>
                                 <td class="px-4 py-4">
-                                    <div class="font-bold text-slate-800 text-xs">{{ $chamber->doctor->user->name }}</div>
+                                    <div class="font-bold text-slate-800 text-xs">{{ $chamber->doctor->name }}</div>
                                     <div class="text-[10px] font-medium text-slate-400 uppercase tracking-tight">{{ $chamber->doctor->department->name }}</div>
                                 </td>
                                 <td class="px-4 py-4">

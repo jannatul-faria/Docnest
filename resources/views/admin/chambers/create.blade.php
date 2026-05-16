@@ -25,7 +25,7 @@
                         <select name="doctor_id" id="doctor_id" class="w-full rounded-2xl border-slate-100 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-blue-50 focus:border-blue-400 transition-all font-bold text-slate-700">
                             <option value="">Choose a doctor...</option>
                             @foreach($doctors as $doctor)
-                                <option value="{{ $doctor->id }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>{{ $doctor->user->name }} ({{ $doctor->specialization }})</option>
+                                <option value="{{ $doctor->id }}" {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>{{ $doctor->name }} ({{ $doctor->specialization }})</option>
                             @endforeach
                         </select>
                         @error('doctor_id') <p class="text-xs text-red-600 font-bold ml-1">{{ $message }}</p> @enderror

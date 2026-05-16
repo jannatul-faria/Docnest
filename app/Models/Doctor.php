@@ -16,6 +16,8 @@ class Doctor extends Model implements HasMedia
 
     protected $fillable = [
         'user_id',
+        'name',
+        'email',
         'department_id',
         'specialization',
         'experience_years',
@@ -90,5 +92,15 @@ class Doctor extends Model implements HasMedia
     public function getReviewsCountAttribute()
     {
         return $this->reviews()->where('status', true)->count();
+    }
+
+    public function getNameAttribute($value)
+    {
+        return $value ?: optional($this->user)->name;
+    }
+
+    public function getEmailAttribute($value)
+    {
+        return $value ?: optional($this->user)->email;
     }
 }
