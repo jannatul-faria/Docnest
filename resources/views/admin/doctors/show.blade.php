@@ -5,7 +5,7 @@
         <!-- Top Navigation & Actions -->
         <div class="flex items-center justify-between mb-8">
             <a href="{{ route('admin.doctors.index') }}"
-                class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-blue-600 transition-colors">
+                class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary transition-colors">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -14,7 +14,7 @@
             </a>
             <div class="flex items-center">
                 <a href="{{ route('admin.doctors.edit', $doctor) }}"
-                    class="inline-flex items-center px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">
+                    class="inline-flex items-center px-6 py-2.5 bg-slate-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
@@ -27,7 +27,7 @@
 
         <!-- Main Info Card -->
         <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden mb-8">
-            <div class="h-32 md:h-48 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
+            <div class="h-32 md:h-48 bg-gradient-to-r from-slate-600 to-green-600"></div>
             <div class="p-6 md:p-10 pb-10">
                 <div class="relative flex flex-col md:flex-row items-start md:items-end -mt-12 md:-mt-16 gap-6 mb-10">
                     <div class="relative">
@@ -38,7 +38,7 @@
                                     class="h-full w-full object-cover">
                             @else
                                 <div
-                                    class="h-full w-full bg-blue-50 flex items-center justify-center text-blue-600 text-4xl font-black">
+                                    class="h-full w-full bg-primary flex items-center justify-center text-primary text-4xl font-black">
                                     {{ substr($doctor->name, 0, 1) }}
                                 </div>
                             @endif
@@ -61,7 +61,7 @@
                                 @endif
                             </div>
                         </div>
-                        <p class="text-xl text-blue-600 font-bold">{{ $doctor->specialization }}</p>
+                        <p class="text-xl text-primary font-bold">{{ $doctor->specialization }}</p>
                         <div class="flex flex-wrap gap-6 text-sm text-slate-500 font-medium">
                             <span class="flex items-center"><svg class="w-4 h-4 mr-2 text-slate-400" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
@@ -118,8 +118,8 @@
             <!-- Education -->
             <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-8 md:p-10">
                 <div class="flex items-center mb-8">
-                    <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mr-4">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 14l9-5-9-5-9 5 9 5z"></path>
                         </svg>
@@ -129,12 +129,12 @@
                 <div class="space-y-8">
                     @forelse($doctor->educations as $edu)
                         <div class="flex items-start gap-4">
-                            <div class="h-2 w-2 rounded-full bg-blue-500 mt-2 flex-shrink-0"></div>
+                            <div class="h-2 w-2 rounded-full bg-primary0 mt-2 flex-shrink-0"></div>
                             <div>
                                 <h4 class="font-bold text-slate-900 text-lg leading-tight">{{ $edu->degree }}</h4>
                                 <p class="text-sm font-medium text-slate-500 mt-1">{{ $edu->institution }}</p>
                                 <span
-                                    class="inline-block mt-2 px-2.5 py-1 bg-blue-50 text-blue-600 text-[10px] font-black rounded-lg uppercase tracking-wider">Class
+                                    class="inline-block mt-2 px-2.5 py-1 bg-primary text-white text-[10px] font-black rounded-lg uppercase tracking-wider">Class
                                     of {{ $edu->passing_year }}</span>
                             </div>
                         </div>

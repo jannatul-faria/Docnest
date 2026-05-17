@@ -21,7 +21,7 @@ class ReviewController extends Controller
                 })->orWhere('comment', 'LIKE', "%{$search}%");
             })
             ->latest()
-            ->paginate(15)
+            ->paginate(10)
             ->withQueryString();
 
         return view('admin.reviews.index', compact('reviews'));

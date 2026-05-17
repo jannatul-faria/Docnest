@@ -17,7 +17,7 @@ class SettingController extends Controller
 
     public function update(Request $request)
     {
-        $settings = $request->except(['_token', '_method', 'logo', 'favicon']);
+        $settings = $request->except(['_token', '_method', 'logo', 'favicon', 'logo_white']);
 
         foreach ($settings as $key => $value) {
             Setting::updateOrCreate(['key' => $key], ['value' => $value]);
@@ -29,6 +29,13 @@ class SettingController extends Controller
             $path = $request->file('logo')->store('settings', 'public');
             Setting::updateOrCreate(['key' => 'logo'], ['value' => $path]);
             Cache::forget("setting.logo");
+        }
+
+        // Handle White Logo Upload
+        if ($request->hasFile('logo_white')) {
+            $path = $request->file('logo_white')->store('settings', 'public');
+            Setting::updateOrCreate(['key' => 'logo_white'], ['value' => $path]);
+            Cache::forget("setting.logo_white");
         }
 
         // Handle Favicon Upload

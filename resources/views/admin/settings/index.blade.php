@@ -45,31 +45,46 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
                         <div class="space-y-4">
-                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest block">Site Logo</label>
-                            <div class="flex items-center space-x-4">
-                                <div class="h-16 w-16 bg-slate-100 rounded-2xl flex items-center justify-center overflow-hidden border border-slate-200">
+                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest block">Site Logo (Default)</label>
+                            <div class="flex flex-col space-y-2">
+                                <div class="h-16 w-full bg-slate-100 rounded-2xl flex items-center justify-center overflow-hidden border border-slate-200">
                                     @if(get_setting('logo'))
-                                        <img src="{{ asset('storage/' . get_setting('logo')) }}" class="h-full w-full object-contain">
+                                        <img src="{{ asset('storage/' . get_setting('logo')) }}" class="h-full max-h-14 w-auto object-contain p-1">
                                     @else
                                         <svg class="w-8 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2-2v12a2 2 0 002 2z"></path></svg>
                                     @endif
                                 </div>
-                                <input type="file" name="logo" class="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all">
+                                <input type="file" name="logo" class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-black file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all">
                             </div>
                         </div>
+
+                        <div class="space-y-4">
+                            <label class="text-xs font-black text-slate-400 uppercase tracking-widest block">Site Logo (White / Light Version)</label>
+                            <div class="flex flex-col space-y-2">
+                                <div class="h-16 w-full bg-slate-800 rounded-2xl flex items-center justify-center overflow-hidden border border-slate-700">
+                                    @if(get_setting('logo_white'))
+                                        <img src="{{ asset('storage/' . get_setting('logo_white')) }}" class="h-full max-h-14 w-auto object-contain p-1">
+                                    @else
+                                        <svg class="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2-2v12a2 2 0 002 2z"></path></svg>
+                                    @endif
+                                </div>
+                                <input type="file" name="logo_white" class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-black file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all">
+                            </div>
+                        </div>
+
                         <div class="space-y-4">
                             <label class="text-xs font-black text-slate-400 uppercase tracking-widest block">Favicon</label>
-                            <div class="flex items-center space-x-4">
-                                <div class="h-12 w-12 bg-slate-100 rounded-xl flex items-center justify-center overflow-hidden border border-slate-200">
+                            <div class="flex flex-col space-y-2">
+                                <div class="h-16 w-full bg-slate-100 rounded-2xl flex items-center justify-center overflow-hidden border border-slate-200">
                                     @if(get_setting('favicon'))
                                         <img src="{{ asset('storage/' . get_setting('favicon')) }}" class="h-8 w-8 object-contain">
                                     @else
                                         <svg class="w-6 h-6 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                     @endif
                                 </div>
-                                <input type="file" name="favicon" class="text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all">
+                                <input type="file" name="favicon" class="text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-black file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all">
                             </div>
                         </div>
                     </div>

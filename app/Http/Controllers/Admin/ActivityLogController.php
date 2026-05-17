@@ -14,14 +14,14 @@ class ActivityLogController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('description', 'like', "%{$search}%")
-                  ->orWhere('subject_type', 'like', "%{$search}%")
-                  ->orWhere('subject_id', 'like', "%{$search}%");
+                    ->orWhere('subject_type', 'like', "%{$search}%")
+                    ->orWhere('subject_id', 'like', "%{$search}%");
             });
         }
 
-        $activities = $query->paginate(30);
+        $activities = $query->paginate(10)->withQueryString();
 
         return view('admin.activity-logs.index', compact('activities'));
     }

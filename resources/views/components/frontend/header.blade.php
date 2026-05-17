@@ -6,7 +6,7 @@
                 <a href="{{ route('home') }}" class="flex items-center group">
                     @if(get_setting('logo'))
                         <img src="{{ asset('storage/' . get_setting('logo')) }}"
-                            alt="{{ get_setting('site_name', 'DocNest') }}" class="h-10 w-auto">
+                            alt="{{ get_setting('site_name', 'DocNest') }}" class="h-12 md:h-14 w-auto object-contain">
                     @else
                         <div
                             class="h-10 w-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
@@ -31,7 +31,8 @@
                 <a href="{{ route('departments.index') }}"
                     class="text-sm font-bold {{ request()->routeIs('departments.index') ? 'text-primary' : 'text-slate-500' }} hover:text-primary transition-colors">Departments</a>
                 <a href="{{ route('about') }}"
-                    class="text-sm font-bold {{ request()->routeIs('about') ? 'text-primary' : 'text-slate-500' }} hover:text-primary transition-colors">About Us</a>
+                    class="text-sm font-bold {{ request()->routeIs('about') ? 'text-primary' : 'text-slate-500' }} hover:text-primary transition-colors">About
+                    Us</a>
             </div>
 
             <div class="flex items-center space-x-4">
@@ -66,8 +67,12 @@
                         </a>
                     </div>
                 @else
-                    <a href="{{ route('login') }}"
-                        class="text-sm font-bold text-slate-600 hover:text-primary transition-colors px-2">Sign In</a>
+                    <div class="flex items-center space-x-3">
+                        <a href="{{ route('login') }}"
+                            class="text-sm font-bold text-slate-600 hover:text-primary transition-colors px-2">Sign In</a>
+                        <a href="{{ route('register') }}"
+                            class="text-sm font-bold bg-primary text-white px-4 py-2 rounded-full hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">Register</a>
+                    </div>
                 @endauth
             </div>
         </div>

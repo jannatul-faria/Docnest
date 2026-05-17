@@ -228,6 +228,20 @@
                     </div>
                 @endforeach
             </div>
+
+            <!-- View All Doctors Button -->
+            @if($totalDoctorsCount > 8)
+                <div class="mt-16 text-center">
+                    <a href="{{ route('doctors.index') }}"
+                        class="inline-flex items-center px-8 py-4 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-primary/90 transition-all shadow-xl shadow-primary/20 gap-3">
+                        View All Doctors
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                    </a>
+                </div>
+            @endif
         </div>
     </section>
     <!-- Our Departments Section -->
@@ -239,7 +253,7 @@
                     <p class="text-slate-500 font-medium text-sm">Choose from more than 20 medical specialties focused
                         on your health.</p>
                 </div>
-                <a href="{{ route('doctors.index') }}"
+                <a href="{{ route('departments.index') }}"
                     class="mt-8 md:mt-0 px-8 py-3 border-2 border-primary text-primary rounded-xl font-black text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
                     View All Departments
                 </a>

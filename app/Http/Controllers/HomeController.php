@@ -19,6 +19,8 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
+        $totalDoctorsCount = Doctor::where('status', true)->count();
+
         $departments = Department::withCount('doctors')
             ->orderBy('doctors_count', 'desc')
             ->take(8)
@@ -33,7 +35,7 @@ class HomeController extends Controller
 
         $divisions = Division::orderBy('name')->get();
 
-        return view('frontend.index', compact('featuredDoctors', 'departments', 'wishlistedIds', 'divisions'));
+        return view('frontend.index', compact('featuredDoctors', 'totalDoctorsCount', 'departments', 'wishlistedIds', 'divisions'));
     }
 
     public function departments()

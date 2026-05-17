@@ -54,7 +54,7 @@ class DepartmentController extends Controller
 
         $this->service->updateDepartment($department, $validated);
 
-        return redirect()->route('departments.index')
+        return redirect()->route('admin.departments.index')
             ->with('success', 'Department updated successfully.');
     }
 
@@ -62,7 +62,7 @@ class DepartmentController extends Controller
     {
         $this->service->deleteDepartment($department);
 
-        return redirect()->route('departments.index')
+        return redirect()->route('admin.departments.index')
             ->with('success', 'Department deleted successfully.');
     }
 }

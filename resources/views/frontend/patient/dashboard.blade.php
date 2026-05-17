@@ -7,14 +7,14 @@
                 <!-- Sidebar -->
                 <aside class="w-full md:w-80">
                     <div class="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-sm text-center">
-                        <div class="h-24 w-24 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center font-black text-3xl mx-auto mb-6">
+                        <div class="h-24 w-24 bg-primary/10 text-primary rounded-full flex items-center justify-center font-black text-3xl mx-auto mb-6">
                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                         </div>
                         <h3 class="text-xl font-black text-slate-900 mb-1">{{ auth()->user()->name }}</h3>
                         <p class="text-xs font-bold text-slate-400 mb-8">{{ auth()->user()->email }}</p>
                         
                         <nav class="space-y-2">
-                            <a href="{{ route('patient.dashboard') }}" class="block w-full py-4 px-6 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest text-center shadow-lg shadow-indigo-100">
+                            <a href="{{ route('patient.dashboard') }}" class="block w-full py-4 px-6 bg-primary text-white rounded-2xl font-black text-xs uppercase tracking-widest text-center shadow-lg shadow-primary/20">
                                 My Profile
                             </a>
                             <a href="{{ route('wishlist.index') }}" class="block w-full py-4 px-6 bg-slate-50 text-slate-600 rounded-2xl font-black text-xs uppercase tracking-widest text-center hover:bg-slate-100 transition-all">
