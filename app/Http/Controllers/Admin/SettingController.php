@@ -26,21 +26,21 @@ class SettingController extends Controller
 
         // Handle Logo Upload
         if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('settings', 'public');
+            $path = upload_file($request->file('logo'), 'settings', 'public', get_setting('logo'));
             Setting::updateOrCreate(['key' => 'logo'], ['value' => $path]);
             Cache::forget("setting.logo");
         }
 
         // Handle White Logo Upload
         if ($request->hasFile('logo_white')) {
-            $path = $request->file('logo_white')->store('settings', 'public');
+            $path = upload_file($request->file('logo_white'), 'settings', 'public', get_setting('logo_white'));
             Setting::updateOrCreate(['key' => 'logo_white'], ['value' => $path]);
             Cache::forget("setting.logo_white");
         }
 
         // Handle Favicon Upload
         if ($request->hasFile('favicon')) {
-            $path = $request->file('favicon')->store('settings', 'public');
+            $path = upload_file($request->file('favicon'), 'settings', 'public', get_setting('favicon'));
             Setting::updateOrCreate(['key' => 'favicon'], ['value' => $path]);
             Cache::forget("setting.favicon");
         }

@@ -9,10 +9,11 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use App\Traits\HandlesMediaUpload;
 
 class Doctor extends Model implements HasMedia
 {
-    use InteractsWithMedia, LogsActivity;
+    use InteractsWithMedia, LogsActivity, HandlesMediaUpload;
 
     protected $fillable = [
         'user_id',
@@ -66,7 +67,30 @@ class Doctor extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('profile_image')
-            ->singleFile();
+            ->singleFile()
+            ->useFallbackUrl(asset('assets/images/default-doctor.png'));
+    }
+
+    public function getFirstMediaUrl(string $collectionName = 'default', string $conversionName = ''): string
+    {
+        $media = $this->getFirstMedia($collectionName);
+        
+        if ($media && file_exists($media->getPath($conversionName))) {
+            return $media->getUrl($conversionName);
+        }
+        
+        if ($collectionName === 'profile_image') {
+            return asset('assets/images/default-doctor.png');
+        }
+        
+        return $media ? $media->getUrl($conversionName) : ($this->getFallbackMediaUrl($collectionName, $conversionName) ?: '');
+    }
+
+    public function hasMedia(string $collectionName = 'default'): bool
+    {
+        $media = $this->getFirstMedia($collectionName);
+        
+        return $media && file_exists($media->getPath());
     }
 
     public function wishlistedBy()
